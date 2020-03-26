@@ -1,0 +1,79 @@
+{
+  "name": "github-action-for-generator",
+  "version": "0.0.1",
+  "description": "GitHub action to generate all the things form your AsyncAPI document",
+  "main": "lib/index.js",
+  "scripts": {
+    "release": "semantic-release",
+    "get-version": "echo $npm_package_version",
+    "eslint": "eslint --config .eslintrc lib",
+    "package": "npm run test && ncc build lib/index.js -o dist",
+    "test": "npm run eslint && jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asyncapi/github-action-for-generator.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "AsyncAPI"
+  ],
+  "author": "Lukasz Gornicki <lpgornicki@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/asyncapi/github-action-for-generator/issues"
+  },
+  "homepage": "https://github.com/asyncapi/github-action-for-generator#readme",
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/github": "^7.0.4",
+    "@semantic-release/release-notes-generator": "^9.0.1",
+    "conventional-changelog-conventionalcommits": "^4.2.3",
+    "eslint": "^6.8.0",
+    "eslint-plugin-sonarjs": "^0.5.0",
+    "husky": "^4.2.3",
+    "semantic-release": "^17.0.4"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.3",
+    "@zeit/ncc": "^0.20.5",
+    "jest": "^24.9.0",
+    "@asyncapi/generator": "git://github.com/fmvilas/generator.git#add-support-for-remote-templates"
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits"
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "dist/bundle.js",
+              "label": "Browser Bundle"
+            }
+          ]
+        }
+      ]
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run package"
+    }
+  }
+}
