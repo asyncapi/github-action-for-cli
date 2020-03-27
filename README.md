@@ -2,8 +2,6 @@
 
 This action generates whatever you want using your AsyncAPI document. It uses [AsyncAPI Generator](https://github.com/asyncapi/generator/)
 
-https://github.com/search?q=topic%3Aasyncapi+topic%3Agenerator+topic%3Atemplate
-
 ## Inputs
 
 ### `template`
@@ -42,7 +40,7 @@ In case all defaults are fine for you, just add such step:
 
 ```
 - name: Generating Markdown from my AsyncAPI document
-  uses: actions/github-action-for-generator@v0
+  uses: actions/github-action-for-generator@v0.0.2
 ```
 
 ### Using all possible inputs
@@ -51,12 +49,12 @@ In case you do not want to use defaults, you for example want to use different t
 
 ```
 - name: Generating Markdown from my AsyncAPI document
-  uses: actions/github-action-for-generator@v0
+  uses: actions/github-action-for-generator@v0.0.2
   with:
-    template: @asyncapi/html
-    filepath: ./my-api/asyncapi.yml
+    template: '@asyncapi/html' #In case of template from npm, because of @ it must be in quotes
+    filepath: my-api/asyncapi.yml
     parameters: 'baseHref=/my-repo-name/ sidebarOrganization=byTags' #space separated list of key/values
-    output: './generated-html'
+    output: 'generated-html'
 ```
 
 ### Accessing output of generation step
@@ -66,7 +64,7 @@ In case you want to have more steps in your workflow after generation and you ne
 ```
 - name: Generating Markdown from my AsyncAPI document
   id: generation
-  uses: actions/github-action-for-generator@v0
+  uses: actions/github-action-for-generator@v0.0.2
 - name: Another step where I want to know what files were generated
   run: echo steps.generation.outputs.files
 ```
