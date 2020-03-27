@@ -69,7 +69,6 @@ In case you want to have more steps in your workflow after generation and you ne
   run: echo steps.generation.outputs.files
 ```
 
-
 ### Example workflow with publishing generated HTML to GitHub Pages
 
 In case you want to validate your asyncapi file first, and also send generated HTML to GitHub Pages this is how full workflow could look like:
