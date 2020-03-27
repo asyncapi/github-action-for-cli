@@ -38,9 +38,9 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
+    "@asyncapi/generator": "^0.35.0",
     "@zeit/ncc": "^0.20.5",
-    "jest": "^24.9.0",
-    "@asyncapi/generator": "git://github.com/fmvilas/generator.git#add-support-for-remote-templates"
+    "jest": "^24.9.0"
   },
   "release": {
     "branches": [
