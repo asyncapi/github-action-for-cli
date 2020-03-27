@@ -40,7 +40,7 @@ In case all defaults are fine for you, just add such step:
 
 ```
 - name: Generating Markdown from my AsyncAPI document
-  uses: actions/github-action-for-generator@v0
+  uses: actions/github-action-for-generator@v0.0.2
 ```
 
 ### Using all possible inputs
@@ -49,12 +49,12 @@ In case you do not want to use defaults, you for example want to use different t
 
 ```
 - name: Generating Markdown from my AsyncAPI document
-  uses: actions/github-action-for-generator@v0
+  uses: actions/github-action-for-generator@v0.0.2
   with:
-    template: @asyncapi/html
-    filepath: ./my-api/asyncapi.yml
+    template: '@asyncapi/html' #In case of template from npm, because of @ it must be in quotes
+    filepath: my-api/asyncapi.yml
     parameters: 'baseHref=/my-repo-name/ sidebarOrganization=byTags' #space separated list of key/values
-    output: './generated-html'
+    output: 'generated-html'
 ```
 
 ### Accessing output of generation step
@@ -64,13 +64,49 @@ In case you want to have more steps in your workflow after generation and you ne
 ```
 - name: Generating Markdown from my AsyncAPI document
   id: generation
-  uses: actions/github-action-for-generator@v0
+  uses: actions/github-action-for-generator@v0.0.2
 - name: Another step where I want to know what files were generated
   run: echo steps.generation.outputs.files
 ```
 
-## Example usage with other actions
+### Example workflow with publishing generated HTML to GitHub Pages
 
-### Workflow with publishing generated HTML to GitHub Pages
+In case you want to validate your asyncapi file first, and also send generated HTML to GitHub Pages this is how full workflow could look like:
 
-### Workflow with publishing generated HTML to Netlify
+```
+name: AsyncAPI documents processing
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+    #"standard step" where repo needs to be checked-out first
+    - name: Checkout repo
+      uses: actions/checkout@v2
+    #Using another action for AsyncAPI for validation
+    - name: asyncapi-github-action
+      uses: WaleedAshraf/asyncapi-github-action@v0.0.2
+      with:
+        filepath: docs/api/my-asyncapi.yml
+      
+    #In case you do not want to use defaults, you for example want to use different template
+    - name: Generating HTML from my AsyncAPI document
+      uses: derberg/github-action-for-generator@vv0.0.2
+      with:
+        template: '@asyncapi/html'
+        filepath: docs/api/my-asyncapi.yaml
+        parameters: 'baseHref=/test-experiment/ sidebarOrganization=byTags' #space separated list of key/values
+        output: 'generated-html'
+      
+    #Using another action that takes generated HTML and pushes it to GH Pages
+    - name: Deploy GH page
+      uses: JamesIves/github-pages-deploy-action@3.4.2
+      with:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: generated-html
+```
