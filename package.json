@@ -2,7 +2,7 @@
   "name": "github-action-for-generator",
   "version": "0.0.2",
   "description": "GitHub action to generate all the things form your AsyncAPI document",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "release": "semantic-release",
     "get-version": "echo $npm_package_version",
