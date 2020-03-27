@@ -2,8 +2,6 @@
 
 This action generates whatever you want using your AsyncAPI document. It uses [AsyncAPI Generator](https://github.com/asyncapi/generator/)
 
-https://github.com/search?q=topic%3Aasyncapi+topic%3Agenerator+topic%3Atemplate
-
 ## Inputs
 
 ### `template`
