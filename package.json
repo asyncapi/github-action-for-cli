@@ -8,7 +8,8 @@
     "get-version": "echo $npm_package_version",
     "eslint": "eslint --config .eslintrc lib",
     "package": "npm run test && ncc build lib/index.js -o dist",
-    "test": "npm run eslint && jest"
+    "test": "npm run eslint && jest",
+    "start": "node lib/index.js"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,7 @@
     "@actions/core": "^1.2.3",
     "@zeit/ncc": "^0.20.5",
     "jest": "^24.9.0",
-    "@asyncapi/generator": "^0.35.0"
+    "@asyncapi/generator": "git://github.com/derberg/generator.git#fix-remote-templates"
   },
   "release": {
     "branches": [
