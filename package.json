@@ -41,7 +41,8 @@
     "@actions/core": "^1.2.3",
     "@asyncapi/generator": "^0.35.0",
     "@zeit/ncc": "^0.20.5",
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "readdirp": "^3.4.0"
   },
   "release": {
     "branches": [
