@@ -1,6 +1,6 @@
 # GitHub Action for Generator
 
-This action generates whatever you want using your AsyncAPI document. It uses [AsyncAPI Generator](https://github.com/asyncapi/generator/)
+This action generates whatever you want using your AsyncAPI document. It uses [AsyncAPI Generator](https://github.com/asyncapi/generator/).
 
 ## Inputs
 
