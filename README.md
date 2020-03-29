@@ -40,7 +40,7 @@ In case all defaults are fine for you, just add such step:
 
 ```
 - name: Generating Markdown from my AsyncAPI document
-  uses: actions/github-action-for-generator@v0.0.2
+  uses: asyncapi/github-action-for-generator@v0.0.2
 ```
 
 ### Using all possible inputs
@@ -48,13 +48,13 @@ In case all defaults are fine for you, just add such step:
 In case you do not want to use defaults, you for example want to use different template:
 
 ```
-- name: Generating Markdown from my AsyncAPI document
-  uses: actions/github-action-for-generator@v0.0.2
+- name: Generating HTML from my AsyncAPI document
+  uses: asyncapi/github-action-for-generator@v0.0.2
   with:
-    template: '@asyncapi/html' #In case of template from npm, because of @ it must be in quotes
-    filepath: my-api/asyncapi.yml
-    parameters: 'baseHref=/my-repo-name/ sidebarOrganization=byTags' #space separated list of key/values
-    output: 'generated-html'
+    template: '@asyncapi/html-template'  #In case of template from npm, because of @ it must be in quotes
+    filepath: docs/api/my-asyncapi.yml
+    parameters: baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
+    output: generated-html
 ```
 
 ### Accessing output of generation step
@@ -64,9 +64,9 @@ In case you want to have more steps in your workflow after generation and you ne
 ```
 - name: Generating Markdown from my AsyncAPI document
   id: generation
-  uses: actions/github-action-for-generator@v0.0.2
-- name: Another step where I want to know what files were generated
-  run: echo steps.generation.outputs.files
+  uses: asyncapi/github-action-for-generator@v0.0.2
+- name: Another step where I want to know what files were generated so I can pass it to another step and process them forward if needed
+  run: echo '${{steps.generation.outputs.files}}'
 ```
 
 ### Example workflow with publishing generated HTML to GitHub Pages
@@ -74,6 +74,7 @@ In case you want to have more steps in your workflow after generation and you ne
 In case you want to validate your asyncapi file first, and also send generated HTML to GitHub Pages this is how full workflow could look like:
 
 ```
+
 name: AsyncAPI documents processing
 
 on:
@@ -87,20 +88,21 @@ jobs:
     #"standard step" where repo needs to be checked-out first
     - name: Checkout repo
       uses: actions/checkout@v2
+      
     #Using another action for AsyncAPI for validation
-    - name: asyncapi-github-action
+    - name: Validating AsyncAPI document
       uses: WaleedAshraf/asyncapi-github-action@v0.0.2
       with:
         filepath: docs/api/my-asyncapi.yml
       
     #In case you do not want to use defaults, you for example want to use different template
     - name: Generating HTML from my AsyncAPI document
-      uses: derberg/github-action-for-generator@vv0.0.2
+      uses: asyncapi/github-action-for-generator@v0.0.2
       with:
-        template: '@asyncapi/html'
-        filepath: docs/api/my-asyncapi.yaml
-        parameters: 'baseHref=/test-experiment/ sidebarOrganization=byTags' #space separated list of key/values
-        output: 'generated-html'
+        template: '@asyncapi/html-template'  #In case of template from npm, because of @ it must be in quotes
+        filepath: docs/api/my-asyncapi.yml
+        parameters: baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
+        output: generated-html
       
     #Using another action that takes generated HTML and pushes it to GH Pages
     - name: Deploy GH page
