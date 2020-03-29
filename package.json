@@ -67,17 +67,7 @@
           "npmPublish": false
         }
       ],
-      [
-        "@semantic-release/github",
-        {
-          "assets": [
-            {
-              "path": "dist/bundle.js",
-              "label": "Browser Bundle"
-            }
-          ]
-        }
-      ]
+      "@semantic-release/github"
     ]
   },
   "husky": {
