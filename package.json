@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@asyncapi/generator": "git://github.com/derberg/generator.git#fix-templates",
+    "@asyncapi/generator": "^0.35.1",
     "@zeit/ncc": "^0.20.5",
     "jest": "^24.9.0",
     "readdirp": "^3.4.0"
