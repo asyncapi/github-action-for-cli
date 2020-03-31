@@ -8,7 +8,9 @@ This action generates whatever you want using your AsyncAPI document. It uses [A
 
 Template for the generator. Official templates are listed here https://github.com/search?q=topic%3Aasyncapi+topic%3Agenerator+topic%3Atemplate. You can pass template as npm package, url to git repository, link to tar file or local template.
 
-**Default** points to `@asyncapi/markdown-template` template.
+**Default** points to `@asyncapi/markdown-template@0.3.0` template.
+
+> We recommend to always specify the version of the template to not encounter any issues with the action in case of release of the template that is not compatible with given version of the generator.
 
 ### `filepath`
 
@@ -40,7 +42,7 @@ In case all defaults are fine for you, just add such step:
 
 ```
 - name: Generating Markdown from my AsyncAPI document
-  uses: asyncapi/github-action-for-generator@v0.1.0
+  uses: asyncapi/github-action-for-generator@v0.2.0
 ```
 
 ### Using all possible inputs
@@ -49,9 +51,9 @@ In case you do not want to use defaults, you for example want to use different t
 
 ```
 - name: Generating HTML from my AsyncAPI document
-  uses: asyncapi/github-action-for-generator@v0.1.0
+  uses: asyncapi/github-action-for-generator@v0.2.0
   with:
-    template: '@asyncapi/html-template'  #In case of template from npm, because of @ it must be in quotes
+    template: '@asyncapi/html-template@0.3.0'  #In case of template from npm, because of @ it must be in quotes
     filepath: docs/api/my-asyncapi.yml
     parameters: baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
     output: generated-html
@@ -64,7 +66,7 @@ In case you want to have more steps in your workflow after generation and you ne
 ```
 - name: Generating Markdown from my AsyncAPI document
   id: generation
-  uses: asyncapi/github-action-for-generator@v0.1.0
+  uses: asyncapi/github-action-for-generator@v0.2.0
 - name: Another step where I want to know what files were generated so I can pass it to another step and process them forward if needed
   run: echo '${{steps.generation.outputs.files}}'
 ```
@@ -97,9 +99,9 @@ jobs:
       
     #In case you do not want to use defaults, you for example want to use different template
     - name: Generating HTML from my AsyncAPI document
-      uses: asyncapi/github-action-for-generator@v0.1.0
+      uses: asyncapi/github-action-for-generator@v0.2.0
       with:
-        template: '@asyncapi/html-template'  #In case of template from npm, because of @ it must be in quotes
+        template: '@asyncapi/html-template@0.3.0'  #In case of template from npm, because of @ it must be in quotes
         filepath: docs/api/my-asyncapi.yml
         parameters: baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
         output: generated-html
