@@ -40,7 +40,7 @@ In case all defaults are fine for you, just add such step:
 
 ```
 - name: Generating Markdown from my AsyncAPI document
-  uses: asyncapi/github-action-for-generator@v0.0.2
+  uses: asyncapi/github-action-for-generator@v0.1.0
 ```
 
 ### Using all possible inputs
@@ -49,7 +49,7 @@ In case you do not want to use defaults, you for example want to use different t
 
 ```
 - name: Generating HTML from my AsyncAPI document
-  uses: asyncapi/github-action-for-generator@v0.0.2
+  uses: asyncapi/github-action-for-generator@v0.1.0
   with:
     template: '@asyncapi/html-template'  #In case of template from npm, because of @ it must be in quotes
     filepath: docs/api/my-asyncapi.yml
@@ -64,7 +64,7 @@ In case you want to have more steps in your workflow after generation and you ne
 ```
 - name: Generating Markdown from my AsyncAPI document
   id: generation
-  uses: asyncapi/github-action-for-generator@v0.0.2
+  uses: asyncapi/github-action-for-generator@v0.1.0
 - name: Another step where I want to know what files were generated so I can pass it to another step and process them forward if needed
   run: echo '${{steps.generation.outputs.files}}'
 ```
@@ -91,13 +91,13 @@ jobs:
       
     #Using another action for AsyncAPI for validation
     - name: Validating AsyncAPI document
-      uses: WaleedAshraf/asyncapi-github-action@v0.0.2
+      uses: WaleedAshraf/asyncapi-github-action@v0.0.3
       with:
         filepath: docs/api/my-asyncapi.yml
       
     #In case you do not want to use defaults, you for example want to use different template
     - name: Generating HTML from my AsyncAPI document
-      uses: asyncapi/github-action-for-generator@v0.0.2
+      uses: asyncapi/github-action-for-generator@v0.1.0
       with:
         template: '@asyncapi/html-template'  #In case of template from npm, because of @ it must be in quotes
         filepath: docs/api/my-asyncapi.yml
