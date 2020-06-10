@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@asyncapi/generator": "1.0.0-rc.2",
+    "@asyncapi/generator": "https://github.com/derberg/generator#make-action-work",
     "readdirp": "^3.4.0"
   },
   "release": {
