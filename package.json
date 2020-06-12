@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@asyncapi/generator": "1.0.0-rc.4",
+    "@asyncapi/generator": "^1.0.0-rc.4",
     "readdirp": "^3.4.0"
   },
   "release": {
