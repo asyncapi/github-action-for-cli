@@ -113,3 +113,7 @@ jobs:
         BRANCH: gh-pages
         FOLDER: generated-html
 ```
+
+## Troubleshooting
+
+You can enable more log information in GitHub Action by adding `ACTIONS_STEP_DEBUG` secret to repository where you want to use this action. Set the value of this secret to `true` and you''ll notice more debug logs from this action.
