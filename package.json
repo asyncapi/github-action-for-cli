@@ -38,7 +38,7 @@
     "semantic-release": "^17.0.4"
   },
   "dependencies": {
-    "@actions/core": "^1.2.3",
+    "@actions/core": "^1.2.6",
     "@asyncapi/generator": "^0.36.0",
     "@zeit/ncc": "^0.20.5",
     "jest": "^24.9.0",
