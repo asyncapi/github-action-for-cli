@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@asyncapi/generator": "https://github.com/derberg/generator/#6e2d3869de0b96068fb0b1d161779e5ffbd24073",
+    "@asyncapi/generator": "https://github.com/derberg/generator/#26bd28495c1039bc974efcd57149ea1889e0922d",
     "readdirp": "^3.4.0"
   },
   "release": {
