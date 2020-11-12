@@ -40,9 +40,9 @@
     "jest": "^26.6.3"
   },
   "dependencies": {
+    "readdirp": "^3.4.0",
     "@actions/core": "^1.2.3",
-    "@asyncapi/generator": "https://github.com/derberg/generator/#0af912f7401db6beeead07a3dea3bff83d0678df",
-    "readdirp": "^3.4.0"
+    "@asyncapi/generator": "https://github.com/derberg/generator/#0af912f7401db6beeead07a3dea3bff83d0678df"
   },
   "release": {
     "branches": [
