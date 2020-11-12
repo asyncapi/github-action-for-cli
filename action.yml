@@ -16,9 +16,6 @@ inputs:
     description: 'Directory where to put the generated files.'
     required: false
     default: 'output'
-outputs:
-  files:
-    description: 'List of generated files.'
 runs:
   using: 'node12'
   main: 'dist/index.js'

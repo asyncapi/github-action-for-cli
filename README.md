@@ -28,12 +28,6 @@ Directory where to put the generated files.
 
 **Default** points to `output` directory in the working directory.
 
-## Outputs
-
-### `files`
-
-List of generated files.
-
 ## Example usage
 
 ### Basic
@@ -67,8 +61,6 @@ In case you want to have more steps in your workflow after generation and you ne
 - name: Generating Markdown from my AsyncAPI document
   id: generation
   uses: asyncapi/github-action-for-generator@v1
-- name: Another step where I want to know what files were generated so I can pass it to another step and process them forward if needed
-  run: echo '${{steps.generation.outputs.files}}'
 ```
 
 ### Example workflow with publishing generated HTML to GitHub Pages
