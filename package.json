@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@asyncapi/generator": "https://github.com/derberg/generator/#0af912f7401db6beeead07a3dea3bff83d0678df"
+    "@asyncapi/generator": "1.0.0-rc.15"
   },
   "release": {
     "branches": [
