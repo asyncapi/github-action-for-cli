@@ -53,16 +53,6 @@ In case you do not want to use defaults, you for example want to use different t
     output: generated-html
 ```
 
-### Accessing output of generation step
-
-In case you want to have more steps in your workflow after generation and you need to know what files were exactly generated, you can access this information as shown below:
-
-```yaml
-- name: Generating Markdown from my AsyncAPI document
-  id: generation
-  uses: asyncapi/github-action-for-generator@v1
-```
-
 ### Example workflow with publishing generated HTML to GitHub Pages
 
 In case you want to validate your asyncapi file first, and also send generated HTML to GitHub Pages this is how full workflow could look like:
