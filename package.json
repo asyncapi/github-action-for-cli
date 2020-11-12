@@ -37,11 +37,11 @@
     "husky": "^4.2.3",
     "semantic-release": "^17.0.4",
     "@vercel/ncc": "^0.25.1",
-    "jest": "^24.9.0"
+    "jest": "^26.6.3"
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@asyncapi/generator": "1.0.0-rc.15",
+    "@asyncapi/generator": "1.0.0-rc.5",
     "readdirp": "^3.4.0"
   },
   "release": {
