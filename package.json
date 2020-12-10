@@ -6,9 +6,9 @@
   "scripts": {
     "release": "semantic-release",
     "get-version": "echo $npm_package_version",
-    "eslint": "eslint --config .eslintrc lib",
+    "lint": "eslint --max-warnings 0 --config .eslintrc lib",
     "package": "npm run test && ncc build lib/index.js -o dist",
-    "test": "npm run eslint && jest",
+    "test": "npm run lint && jest --coverage",
     "start": "node lib/index.js"
   },
   "repository": {
