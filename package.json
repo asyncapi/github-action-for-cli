@@ -8,7 +8,7 @@
     "get-version": "echo $npm_package_version",
     "lint": "eslint --max-warnings 0 --config .eslintrc lib",
     "package": "npm run test && ncc build lib/index.js -o dist",
-    "test": "npm run lint && jest --coverage",
+    "test": "jest --coverage",
     "start": "node lib/index.js"
   },
   "repository": {
