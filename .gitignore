@@ -8,3 +8,4 @@ output
 !node_modules/@npmcli/
 node_modules/@npmcli/*
 !node_modules/@npmcli/run-script/
+!node_modules/typescript/
