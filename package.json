@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "release": "semantic-release",
-    "lint": "eslint --max-warnings 0 --config .eslintrc lib",
+    "lint": "node node_modules/eslint/bin/eslint --max-warnings 0 --config .eslintrc lib",
     "package": "ncc build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
     "postinstall": "npm run package",
     "test": "node node_modules/jest/bin/jest.js --coverage",
