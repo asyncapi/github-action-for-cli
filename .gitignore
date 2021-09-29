@@ -1,6 +1,3 @@
 coverage
 .DS_Store
 output
-node_modules/@vercel/ncc/dist/ncc/cli.js.cache
-node_modules/@vercel/ncc/dist/ncc/index.js.cache
-node_modules/@vercel/ncc/dist/ncc/loaders/relocate-loader.js.cache
