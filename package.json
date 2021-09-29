@@ -8,7 +8,7 @@
     "lint": "eslint --max-warnings 0 --config .eslintrc lib",
     "package": "ncc build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
     "postinstall": "npm run package",
-    "test": "./node_modules/jest/bin/jest.js --coverage",
+    "test": "node_modules/jest/bin/jest.js --coverage",
     "start": "node lib/index.js",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
