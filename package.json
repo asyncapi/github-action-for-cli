@@ -4,7 +4,7 @@
   "description": "GitHub action to generate all the things form your AsyncAPI document",
   "main": "dist/index.js",
   "scripts": {
-    "release": "semantic-release",
+    "release": "node node_modules/semantic-release/bin/semantic-release",
     "lint": "node node_modules/eslint/bin/eslint --max-warnings 0 --config .eslintrc lib",
     "package": "node node_modules/@vercel/ncc/dist/ncc/cli build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
     "postinstall": "npm run package",
