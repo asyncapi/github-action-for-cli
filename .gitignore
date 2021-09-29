@@ -8,4 +8,5 @@ output
 !node_modules/@npmcli/
 node_modules/@npmcli/*
 !node_modules/@npmcli/run-script/
+!node_modules/read-package-json-fast/
 !node_modules/typescript/
