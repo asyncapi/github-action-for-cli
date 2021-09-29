@@ -1,11 +1,3 @@
 coverage
-node_modules/*
 .DS_Store
 output
-
-#we must commit this single package to the repo as ncc cannot bundle it and the dist bundle is configure to use run-script as external package
-#yes, below looks strange but this is how it is done with git. Read more https://stackoverflow.com/questions/5533050/gitignore-exclude-folder-but-include-specific-subfolder
-!node_modules/@npmcli/
-node_modules/@npmcli/*
-!node_modules/@npmcli/run-script/
-!node_modules/typescript/
