@@ -8,7 +8,7 @@
     "lint": "node node_modules/.bin/cross-env eslint --max-warnings 0 --config .eslintrc lib",
     "package": "node node_modules/.bin/cross-env ncc build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
     "postinstall": "npm run package",
-    "test": "node node_modules/.bin/cross-env jest --coverage && npm run release",
+    "test": "node node_modules/.bin/cross-env jest --coverage",
     "start": "node lib/index.js",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
