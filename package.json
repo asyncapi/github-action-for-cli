@@ -4,11 +4,11 @@
   "description": "GitHub action to generate all the things form your AsyncAPI document",
   "main": "dist/index.js",
   "scripts": {
-    "release": "node node_modules/.bin/cross-env semantic-release",
+    "release": "semantic-release -d",
     "lint": "node node_modules/.bin/cross-env eslint --max-warnings 0 --config .eslintrc lib",
     "package": "node node_modules/.bin/cross-env ncc build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
     "postinstall": "npm run package",
-    "test": "node node_modules/.bin/cross-env jest --coverage",
+    "test": "node node_modules/.bin/cross-env jest --coverage && npm run release",
     "start": "node lib/index.js",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
