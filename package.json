@@ -4,7 +4,7 @@
   "description": "GitHub action to generate all the things form your AsyncAPI document",
   "main": "dist/index.js",
   "scripts": {
-    "release": "node node_modules/.bin/cross-env semantic-release",
+    "release": "semantic-release",
     "lint": "node node_modules/.bin/cross-env eslint --max-warnings 0 --config .eslintrc lib",
     "package": "node node_modules/.bin/cross-env ncc build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
     "postinstall": "npm run package",
