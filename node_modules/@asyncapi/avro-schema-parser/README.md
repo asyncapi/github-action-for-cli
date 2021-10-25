@@ -130,6 +130,10 @@ await parser.parse(asyncapiWithAvro)
 
 ## Features
 
+### Support of required attributes
+
+Required fields are fields with no default value and without the `"null"` union element.
+
 ### Support for extra attributes on top of Avro specification
 
 Additional attributes not defined in the [Avro Specification](https://avro.apache.org/docs/current/spec.html) are permitted and are treated as a metadata by the specification. To improve human readability of generated AsyncAPI documentation and to leverage more features from the JSON schema we included support for the extra attributes that can be added into Avro document.
@@ -137,6 +141,24 @@ Additional attributes not defined in the [Avro Specification](https://avro.apach
 #### List of all supported extra attributes
 
 - `example` - Can be used to define the example value from the business domain of given field. Value will be propagated into [examples attribute](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.5) of JSON schema and therefore will be picked for the generated "Example of payload" when using some AsyncAPI documentation generator.
+
+For Number instances:
+
+- `multipleOf` - Can be used to define [the multipleOf value of a numeric instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.1). The `multipleOf` MUST be a number, strictly greater than 0.
+- `maximum` - Can be used to define [the maximum value of a numeric instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.2).
+- `exclusiveMaximum` - Can be used to define [the exclusiveMaximum value of a numeric instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.3).
+- `minimum` - Can be used to define [the minimum value of a numeric instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.4).
+- `exclusiveMinimum` - Can be used to define [the exclusiveMinimum value of a numeric instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.5).
+
+For String instances:
+- `maxLength` - Can be used to define [the maxLength value of a string instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.1). The value of this keyword MUST be a non-negative integer.
+- `minLength` - Can be used to define [the minLength value of a string instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.2). The value of this keyword MUST be a non-negative integer.
+- `pattern` - Can be used to define [the pattern value of a string instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.3).
+
+For Array instances:
+- `maxItems` - Can be used to define [the maxItems value of a string instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.1). The value of this keyword MUST be a non-negative integer.
+- `minItems` - Can be used to define [the minItems value of a string instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.2). The value of this keyword MUST be a non-negative integer.
+- `uniqueItems` - Can be used to define [the uniqueItems value of a string instance](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.3). The value of this keyword MUST be a boolean.
 
 ### Support for names and namespaces
 
@@ -151,6 +173,8 @@ If no name attribute is present, the 'x-parser-schema-id' will have a generated 
 ### Float and double-precision numbers
 
 JSON numbers ([RFC 4627, section 2.4](http://tools.ietf.org/html/rfc4627)) don't define any limit to the scale and/or precision of numbers. That said, we can enforce limits on `int` and `long` but we can't enforce them on `float` and `double` because they can't accurately be represented on JSON Schema.
+
+> Since we support extra attributes on field, you can set `minimum` and `maximum` attribute on float and double types to display number limits.
 
 ### Hardcoded key and secret
 

@@ -45,17 +45,35 @@ function getFullyQualifiedName(avroDefinition) {
   return name;
 }
 
-const exampleAttributeMapping = (typeInput, example, jsonSchemaInput) => {
+/**
+ * Enrich the parent's required attribute with the required record attributes
+ * @param fieldDefinition the actual field definition
+ * @param parentJsonSchema the parent json schema which contains the required property to enrich
+ * @param haveDefaultValue we assure that a required field does not have a default value
+ */
+const requiredAttributesMapping = (fieldDefinition, parentJsonSchema, haveDefaultValue) => {
+  const isUnionWithNull = Array.isArray(fieldDefinition.type) && fieldDefinition.type.includes('null');
+
+  // we assume that a union type without null and a field without default value is required
+  if (!isUnionWithNull && !haveDefaultValue) {
+    parentJsonSchema.required = parentJsonSchema.required || [];
+    parentJsonSchema.required.push(fieldDefinition.name);
+  }
+};
+
+function extractNonNullableTypeIfNeeded(typeInput, jsonSchemaInput) {
   let type = typeInput;
   let jsonSchema = jsonSchemaInput;
-
   // Map example to first non-null type
   if (Array.isArray(typeInput) && typeInput.length > 0) {
     const pickSecondType = typeInput.length > 1 && typeInput[0] === 'null';
     type = typeInput[+pickSecondType];
     jsonSchema = jsonSchema.oneOf[0];
   }
+  return {type, jsonSchema};
+}
 
+const exampleAttributeMapping = (type, example, jsonSchema) => {
   if (example === undefined || jsonSchema.examples || Array.isArray(type)) return;
 
   switch (type) {
@@ -67,6 +85,44 @@ const exampleAttributeMapping = (typeInput, example, jsonSchemaInput) => {
     break;
   default:
     jsonSchema.examples = [example];
+  }
+};
+
+const additionalAttributesMapping = (typeInput, avroDefinition, jsonSchemaInput) => {
+  const __ret = extractNonNullableTypeIfNeeded(typeInput, jsonSchemaInput);
+  const type = __ret.type;
+  const jsonSchema = __ret.jsonSchema;
+
+  exampleAttributeMapping(type, avroDefinition.example, jsonSchema);
+
+  function setAdditionalAttribute(...names) {
+    names.forEach(name => {
+      let isValueCoherent = true;
+      if (name === 'minLength' || name === 'maxLength') {
+        isValueCoherent = avroDefinition[name] > -1;
+      } else if (name === 'multipleOf') {
+        isValueCoherent = avroDefinition[name] > 0;
+      }
+      if (avroDefinition[name] !== undefined && isValueCoherent) jsonSchema[name] = avroDefinition[name];
+    });
+  }
+
+  switch (type) {
+  case 'int':   // int, long, float, and double must support the attributes bellow
+  case 'long':
+  case 'float':
+  case 'double':
+    setAdditionalAttribute('minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'multipleOf');
+    break;
+  case 'string':
+    jsonSchema.format = avroDefinition.logicalType;
+    setAdditionalAttribute('pattern', 'minLength', 'maxLength');
+    break;
+  case 'array':
+    setAdditionalAttribute('minItems', 'maxItems', 'uniqueItems');
+    break;
+  default:
+    break;
   }
 };
 
@@ -84,7 +140,6 @@ async function convertAvroToJsonSchema(avroDefinition, isTopLevel) {
       // To prefer non-null values in the examples skip null definition here and push it as the last element after loop
       if (defType === 'null') nullDef = def; else jsonSchema.oneOf.push(def);
     }
-
     if (nullDef) jsonSchema.oneOf.push(nullDef);
 
     return jsonSchema;
@@ -121,13 +176,18 @@ async function convertAvroToJsonSchema(avroDefinition, isTopLevel) {
   case 'enum':
     jsonSchema.enum = avroDefinition.symbols;
     break;
+  case 'float':   // float and double must support the format attribute from the avro type
+  case 'double':
+    jsonSchema.format = type;
+    break;
   case 'record':
     const propsMap = new Map();
     for (const field of avroDefinition.fields) {
       const def = await convertAvroToJsonSchema(field.type, false);
 
+      requiredAttributesMapping(field, jsonSchema, field.default !== undefined);
       commonAttributesMapping(field, def, false);
-      exampleAttributeMapping(field.type, field.example, def);
+      additionalAttributesMapping(field.type, field, def);
 
       propsMap.set(field.name, def);
     }
@@ -136,7 +196,7 @@ async function convertAvroToJsonSchema(avroDefinition, isTopLevel) {
   }
 
   commonAttributesMapping(avroDefinition, jsonSchema, isTopLevel);
-  exampleAttributeMapping(type, avroDefinition.example, jsonSchema);
+  additionalAttributesMapping(type, avroDefinition, jsonSchema);
 
   return jsonSchema;
 }
