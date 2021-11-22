@@ -36,7 +36,7 @@ In case all defaults are fine for you, just add such step:
 
 ```yaml
 - name: Generating Markdown from my AsyncAPI document
-  uses: asyncapi/github-action-for-generator@v1
+  uses: docker://asyncapi/github-action-for-generator:2.0.0
 ```
 
 ### Using all possible inputs
@@ -45,7 +45,7 @@ In case you do not want to use defaults, you for example want to use different t
 
 ```yaml
 - name: Generating HTML from my AsyncAPI document
-  uses: asyncapi/github-action-for-generator@v1
+  uses: docker://asyncapi/github-action-for-generator:2.0.0
   with:
     template: '@asyncapi/html-template@0.15.4'  #In case of template from npm, because of @ it must be in quotes
     filepath: docs/api/my-asyncapi.yml
@@ -80,7 +80,7 @@ jobs:
       
     #In case you do not want to use defaults, you for example want to use different template
     - name: Generating HTML from my AsyncAPI document
-      uses: asyncapi/github-action-for-generator@v1
+      uses: docker://asyncapi/github-action-for-generator:2.0.0
       with:
         template: '@asyncapi/html-template@0.9.0'  #In case of template from npm, because of @ it must be in quotes
         filepath: docs/api/my-asyncapi.yml

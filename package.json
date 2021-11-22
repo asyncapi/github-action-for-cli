@@ -5,13 +5,13 @@
   "main": "dist/index.js",
   "scripts": {
     "release": "semantic-release",
-    "lint": "node node_modules/.bin/cross-env eslint --max-warnings 0 --config .eslintrc lib",
-    "package": "node node_modules/.bin/cross-env ncc build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
-    "postinstall": "npm run package",
-    "test": "node node_modules/.bin/cross-env jest --coverage",
+    "lint": "eslint --max-warnings 0 --config .eslintrc lib",
+    "package": "ncc build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
+    "test": "jest --coverage",
     "start": "node lib/index.js",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
-    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
+    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
+    "docker:build": "docker build -t asyncapi/github-action-for-generator:latest ."
   },
   "repository": {
     "type": "git",
@@ -36,10 +36,8 @@
     "@semantic-release/release-notes-generator": "^9.0.1",
     "@vercel/ncc": "^0.31.1",
     "conventional-changelog-conventionalcommits": "^4.2.3",
-    "cross-env": "^7.0.3",
     "eslint": "^6.8.0",
     "eslint-plugin-sonarjs": "^0.5.0",
-    "husky": "^4.2.3",
     "jest": "^26.6.3",
     "semantic-release": "^17.2.3"
   },
@@ -72,10 +70,5 @@
       ],
       "@semantic-release/github"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test && npm run package"
-    }
   }
 }
