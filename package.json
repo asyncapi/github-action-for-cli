@@ -1,6 +1,6 @@
 {
   "name": "github-action-for-generator",
-  "version": "1.0.47",
+  "version": "1.0.55",
   "description": "GitHub action to generate all the things form your AsyncAPI document",
   "main": "dist/index.js",
   "scripts": {
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@asyncapi/generator": "^1.8.14"
+    "@asyncapi/generator": "^1.8.23"
   },
   "release": {
     "branches": [
