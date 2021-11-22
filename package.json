@@ -7,7 +7,6 @@
     "release": "semantic-release",
     "lint": "eslint --max-warnings 0 --config .eslintrc lib",
     "package": "ncc build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
-    "postinstall": "npm run package",
     "test": "jest --coverage",
     "start": "node lib/index.js",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
@@ -39,7 +38,6 @@
     "conventional-changelog-conventionalcommits": "^4.2.3",
     "eslint": "^6.8.0",
     "eslint-plugin-sonarjs": "^0.5.0",
-    "husky": "^4.2.3",
     "jest": "^26.6.3",
     "semantic-release": "^17.2.3"
   },
@@ -72,10 +70,5 @@
       ],
       "@semantic-release/github"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test && npm run package"
-    }
   }
 }
