@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@asyncapi/generator": "^1.8.24"
+    "@asyncapi/generator": "^1.8.25"
   },
   "release": {
     "branches": [
