@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "victormartingarcia",
+      "name": "Victor",
+      "avatar_url": "https://avatars.githubusercontent.com/u/659832?v=4",
+      "profile": "https://www.victormartingarcia.com",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "github-action-for-generator",
+  "projectOwner": "asyncapi",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
