@@ -3,7 +3,7 @@ FROM node:14 as builder
 COPY ./ /app
 WORKDIR /app
 
-RUN npm install --only=prod && npm run package
+RUN npm install && npm run package
 
 FROM node:14-alpine
 
