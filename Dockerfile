@@ -1,9 +1,9 @@
-FROM node:16 as builder
+FROM node:14 as builder
 
 COPY ./ /app
 WORKDIR /app
 
-RUN npm install --omit=dev && npm run package
+RUN npm install --only=prod && npm run package
 
 FROM node:16-alpine
 
