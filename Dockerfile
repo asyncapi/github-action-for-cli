@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN npm install --only=prod && npm run package
 
-FROM node:16-alpine
+FROM node:14-alpine
 
 # We need to copy entire node modules as some dependencies (@npmcli/run-script) cannot be packaged
 # and need to be used by dist as external dependency
