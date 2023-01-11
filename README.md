@@ -77,7 +77,7 @@ jobs:
       
     #Using another action for AsyncAPI for validation
     - name: Validating AsyncAPI document
-      uses: WaleedAshraf/asyncapi-github-action@v1
+      uses: WaleedAshraf/asyncapi-github-action@v0.0.9
       with:
         filepath: docs/api/my-asyncapi.yml
       
