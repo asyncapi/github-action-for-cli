@@ -1,7 +1,5 @@
----
 title: GitHub Action for Generator
 filters:
-  language: JavaScript
   technology:
   - AsyncAPI Generator
   categories:
