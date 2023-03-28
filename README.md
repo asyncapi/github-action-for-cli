@@ -83,7 +83,7 @@ jobs:
       
     #In case you do not want to use defaults, you for example want to use different template
     - name: Generating HTML from my AsyncAPI document
-      uses: docker://asyncapi/github-action-for-generator:2.0.0
+      uses: docker://asyncapi/github-action-for-generator:2.0.0 #always use latest tag as each is pushed to docker
       with:
         template: '@asyncapi/html-template@0.9.0'  #In case of template from npm, because of @ it must be in quotes
         filepath: docs/api/my-asyncapi.yml

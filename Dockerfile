@@ -1,15 +1,12 @@
-FROM node:14 as builder
+FROM node:16 as builder
 
 COPY ./ /app
 WORKDIR /app
 
-RUN npm install && npm run package
+RUN npm install
 
-FROM node:14-alpine
+FROM node:16-alpine
 
-# We need to copy entire node modules as some dependencies (@npmcli/run-script) cannot be packaged
-# and need to be used by dist as external dependency
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app ./
 
-ENTRYPOINT [ "node", "/dist/index.js" ]
+ENTRYPOINT [ "node", "/lib/index.js" ]
