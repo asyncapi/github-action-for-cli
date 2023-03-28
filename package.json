@@ -2,11 +2,10 @@
   "name": "github-action-for-generator",
   "version": "2.1.11",
   "description": "GitHub action to generate all the things form your AsyncAPI document",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "release": "semantic-release",
     "lint": "eslint --max-warnings 0 --config .eslintrc lib",
-    "package": "ncc build lib/index.js -o dist -s --external=\"@npmcli/run-script\"",
     "test": "jest --coverage",
     "start": "node lib/index.js",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
