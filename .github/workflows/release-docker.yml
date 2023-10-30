@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: master
       - name: Get version without v character
@@ -19,7 +19,7 @@ jobs:
         run: |
           VERSION=${{github.event.release.tag_name}}
           VERSION_WITHOUT_V=${VERSION:1}
-          echo "::set-output name=value::$(echo $VERSION_WITHOUT_V)"
+          echo "value=${VERSION_WITHOUT_V}" >> $GITHUB_OUTPUT
       - name: Release to Docker
         run: | 
           echo ${{secrets.DOCKER_PASSWORD}} | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin
