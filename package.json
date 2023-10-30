@@ -4,7 +4,6 @@
   "description": "GitHub action to generate all the things form your AsyncAPI document",
   "main": "lib/index.js",
   "scripts": {
-    "release": "semantic-release",
     "lint": "eslint --max-warnings 0 --config .eslintrc lib",
     "test": "jest --coverage",
     "start": "node lib/index.js",
@@ -29,45 +28,13 @@
   "homepage": "https://github.com/asyncapi/github-action-for-generator#readme",
   "devDependencies": {
     "@npmcli/run-script": "^1.8.5",
-    "@semantic-release/commit-analyzer": "^8.0.1",
-    "@semantic-release/github": "^7.0.4",
-    "@semantic-release/npm": "^7.0.5",
-    "@semantic-release/release-notes-generator": "^9.0.1",
     "@vercel/ncc": "^0.31.1",
-    "conventional-changelog-conventionalcommits": "^4.6.3",
     "eslint": "^6.8.0",
     "eslint-plugin-sonarjs": "^0.5.0",
-    "jest": "^26.6.3",
-    "semantic-release": "^21.0.1"
+    "jest": "^26.6.3"
   },
   "dependencies": {
     "@actions/core": "^1.9.1",
     "@asyncapi/generator": "^1.14.0"
-  },
-  "release": {
-    "branches": [
-      "master"
-    ],
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "preset": "conventionalcommits"
-        }
-      ],
-      [
-        "@semantic-release/release-notes-generator",
-        {
-          "preset": "conventionalcommits"
-        }
-      ],
-      [
-        "@semantic-release/npm",
-        {
-          "npmPublish": false
-        }
-      ],
-      "@semantic-release/github"
-    ]
   }
 }
