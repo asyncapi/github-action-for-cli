@@ -35,6 +35,6 @@
   },
   "dependencies": {
     "@actions/core": "^1.9.1",
-    "@asyncapi/generator": "^1.14.3"
+    "@asyncapi/generator": "^1.15.0"
   }
 }
