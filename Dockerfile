@@ -1,12 +1,9 @@
-FROM node:16 as builder
+FROM node:20.1-alpine3.16
 
-COPY ./ /app
-WORKDIR /app
+RUN apk add --no-cache bash>5.1.16 git>2.42.0
 
-RUN npm install
+COPY entrypoint.sh /entrypoint.sh
 
-FROM node:16-alpine
+RUN chmod +x /entrypoint.sh
 
-COPY --from=builder /app ./
-
-ENTRYPOINT [ "node", "/lib/index.js" ]
+ENTRYPOINT ["/entrypoint.sh"]
