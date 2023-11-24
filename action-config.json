@@ -1,13 +1,27 @@
 {
   "files": [
     {
-      "file": "./test/asyncapi.yml",
+      "file": "./asyncapi.yml",
       "command": "validate",
       "parameters": ""
     },
     {
-      "file": "./test/asyncapi.yml",
+      "file": "./asyncapi.yml",
       "command": "generate",
+      "type": "template",
+      "parameters": "",
+      "template": "@asyncapi/html-template"
+    }, 
+    {
+      "file": "./asyncapi.yml",
+      "command": "generate",
+      "type": "model",
+      "language": "typescript",
+      "parameters": ""
+    },
+    {
+      "file": "./asyncapi.yml",
+      "command": "optimize",
       "parameters": ""
     }
   ]

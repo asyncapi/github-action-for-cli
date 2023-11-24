@@ -20,7 +20,7 @@ VERBOSE="$5"
 
 echo "::group::Debug information"
 if [ -n "$(asyncapi --version)" ]; then
-  echo -e "${YELLOW}AsyncAPI CLI already installed. Skipping...${NC}"
+  echo -e "${YELLOW}AsyncAPI CLI already installed. skipping...\n${NC}"
 else 
   if [ -n "$CLI_VERSION" ]; then
     echo -e "${BLUE}AsyncAPI CLI version to install:${NC}" "$CLI_VERSION"
@@ -72,9 +72,12 @@ fi
 
 if [ -f "$CONFIG_FILE" ]; then 
   echo -e "${BLUE}Found the config file:${NC}" "$CONFIG_FILE"
+
   echo "::group::Debug information"
-  cat "$CONFIG_FILE"
+  echo -e "${BLUE}Config file:${NC}" 
+  cat "$CONFIG_FILE" | jq
   echo "::endgroup::"
+
 else 
   echo -e "${RED}Config file not found:${NC}" "$CONFIG_FILE"
   echo -e "${YELLOW}NOTE: See https://github.com/asyncapi/github-action-for-generatork#config-file-format to know more about"
@@ -82,21 +85,34 @@ else
   exit 1
 fi
 
+handle_file_error () {
+  echo -e "${RED}Validation error: File not found:${NC}" "$1"
+  echo -e "skipping...\n"
+}
+
+handle_config_error () {
+  echo -e "${RED}Invalid $1:${NC}" "$2"
+  echo -e "${YELLOW}NOTE: See https://github.com/asyncapi/github-action-for-generatork#config-file-format to know more about"
+  echo -e "customizing the action using a config file.${NC}"
+}
+
 parse_config_file () {
   echo -e "${BLUE}Parsing config file...${NC}"
   echo "::group::Debug information"
-  echo -e "${BLUE}Config file:${NC}" 
-  cat "$CONFIG_FILE" | jq
 
   # Read the config file and parse the JSON
-  files=$(cat "$CONFIG_FILE" | jq -r '.files[] | "\(.file) \(.command) \(.parameters)"')
+  files=$(cat "$CONFIG_FILE" | jq -r \
+  '.files[] | "\(.file) \(.command) \(if .command == "generate" then .type else "" end) \(if .type == "model" then .language else "" end) \(if .type == "template" then .template else "" end) \(.parameters)"')
 
   # Replace newlines with ;
   files=$(echo "$files" | tr '\n' ';')
-  echo -e "${BLUE}Files:${NC}" "$files"
 
   # Split the files string into an array 
   IFS=';' read -ra file_array <<< "$files"
+
+  for file in "${file_array[@]}"; do
+    echo -e "${BLUE}File:${NC}" "$file"
+  done
   
   echo "::endgroup::"
 }
@@ -114,11 +130,16 @@ handle_validate () {
     command="${file_command[1]:-}"
     parameters="${file_command[2]:-}"
 
-    echo -e "${BLUE}File:${NC}" "$file"
-    echo -e "${BLUE}Command:${NC}" "$command"
-    echo -e "${BLUE}Parameters:${NC}" "$parameters"
-
     if [ $command == "validate" ]; then
+      echo -e "${BLUE}File:${NC}" "$file"
+      echo -e "${BLUE}Command:${NC}" "$command"
+      echo -e "${BLUE}Parameters:${NC}" "$parameters"
+
+      if [ ! -f "$file" ]; then 
+        handle_file_error "$file"
+        continue
+      fi
+
       if [ -n "$parameters" ]; then
         echo -e "${BLUE}Executing command:${NC}" "asyncapi validate $file $parameters"
         eval "asyncapi validate $file $parameters"
@@ -126,7 +147,123 @@ handle_validate () {
         echo -e "${BLUE}Executing command:${NC}" "asyncapi $command $file"
         eval "asyncapi validate $file"
       fi
+
+      echo ""
     fi
   done
 }
 
+handle_optimize () {
+  parse_config_file
+
+  echo -e "${BLUE}Optimising AsyncAPI files...${NC}"
+  echo "::group::Debug information"
+
+  for file in "${file_array[@]}"; do
+    # Split the file string into an array 
+    IFS=' ' read -ra file_command <<< "$file"
+    file="${file_command[0]:-}"
+    command="${file_command[1]:-}"
+    parameters="${file_command[2]:-}"
+
+    if [ $command == "optimize" ]; then
+      echo -e "${BLUE}File:${NC}" "$file"
+      echo -e "${BLUE}Command:${NC}" "$command"
+      echo -e "${BLUE}Parameters:${NC}" "$parameters"
+
+      if [ ! -f "$file" ]; then 
+        handle_file_error "$file"
+        continue
+      fi
+
+      if [ -n "$parameters" ]; then
+        echo -e "${BLUE}Executing command:${NC}" "asyncapi optimize $file $parameters"
+        eval "asyncapi optimize $file $parameters"
+      else
+        echo -e "${BLUE}Executing command:${NC}" "asyncapi $command $file"
+        eval "asyncapi optimize $file"
+      fi
+
+      echo ""
+    fi
+  done
+}
+
+handle_generate () {
+  parse_config_file
+
+  echo -e "${BLUE}Generating AsyncAPI files...${NC}"
+  echo "::group::Debug information"
+
+  for file in "${file_array[@]}"; do
+
+    # Split the file string into an array 
+    IFS=' ' read -ra file_command <<< "$file"
+    file="${file_command[0]:-}"
+    command="${file_command[1]:-}"
+
+    if [ $command == "generate" ]; then
+      echo -e "${BLUE}File:${NC}" "$file"
+      echo -e "${BLUE}Command:${NC}" "$command"
+
+      if [ ! -f "$file" ]; then 
+        handle_file_error "$file"
+        continue
+      fi
+
+      type="${file_command[2]:-}"
+      if [ -z "$type" ]; then type="template"; fi
+      echo -e "${BLUE}Type:${NC}" "$type"
+
+      if [ $type == "model" ]; then
+        language="${file_command[3]:-}"
+        echo -e "${BLUE}Language:${NC}" "$language"
+
+        if [ -z "$language" ]; then
+          handle_config_error "language" "language not found"
+          echo -e "skipping...\n\n"
+          continue
+        fi
+
+        parameters="${file_command[4]:-}"
+        echo -e "${BLUE}Parameters:${NC}" "$parameters"
+
+        echo -e "${BLUE}Executing command:${NC}" "asyncapi generate models $language $file $parameters"
+        eval "asyncapi generate models $language $file $parameters"
+
+      elif [ $type == "template" ]; then
+        template="${file_command[3]:-}"
+        echo -e "${BLUE}Template:${NC}" "$template"
+
+        if [ -z "$template" ] || [ "${template}" == "null" ]; then
+          handle_config_error "template" "template not found"
+          echo -e "skipping...\n"
+          continue
+        fi
+
+        parameters="${file_command[4]:-}"
+        echo -e "${BLUE}Parameters:${NC}" "$parameters"
+
+        echo -e "${BLUE}Executing command:${NC}" "asyncapi generate fromTemplate $file $template $parameters"
+        eval "asyncapi generate fromTemplate $file $template $parameters"
+
+      else
+        echo -e "${RED}Invalid type:${NC}" "$type"
+        echo -e "${YELLOW}NOTE: Type can be either model or template.${NC}"
+      fi
+      
+      echo ""
+    fi
+  done
+}
+
+if [ $COMMAND == "validate" ]; then
+  handle_validate
+elif [ $COMMAND == "optimize" ]; then
+  handle_optimize
+elif [ $COMMAND == "generate" ]; then
+  handle_generate
+else
+  echo -e "${RED}Invalid command:${NC}" "$COMMAND"
+  echo -e "${YELLOW}NOTE: Command can be either validate, optimize or generate.${NC}"
+fi

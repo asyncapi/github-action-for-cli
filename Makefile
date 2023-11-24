@@ -1,5 +1,5 @@
 CLI_VERSION = ''
-DEFAULT_COMMAND = 'generate'
+DEFAULT_COMMAND = generate
 DEFAULT_CONFIG_FILE = ./action-config.json
 DEFAULT_CUSTOM_COMMANDS = ''
 DEFAULT_VERBOSE = 'false'
