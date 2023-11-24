@@ -13,8 +13,8 @@ inputs:
     description: 'Path to the config file. The format of the config file is JSON or YAML. Default is the config file at https://github.com/asyncapi/github-action-for-generator/blob/master/action-config.json.'
     required: false
     default: ''
-  custom_command:
-    description: 'Custom command to be run. This input is required if command is set to custom.'
+  custom_commands:
+    description: 'Custom commands to be run. This input is required if command is set to custom.'
     required: false
     default: ''
   verbose_output:
@@ -29,7 +29,7 @@ runs:
     - ${{ inputs.cli_version }}
     - ${{ inputs.command }}
     - ${{ inputs.config_file }}
-    - ${{ inputs.custom_command }}
+    - ${{ inputs.custom_commands }}
     - ${{ inputs.verbose_output }}
 
 branding:

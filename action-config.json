@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "file": "./test/asyncapi.yml",
+      "command": "validate",
+      "parameters": ""
+    },
+    {
+      "file": "./test/asyncapi.yml",
+      "command": "generate",
+      "parameters": ""
+    }
+  ]
+}
