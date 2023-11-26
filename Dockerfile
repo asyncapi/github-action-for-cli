@@ -1,4 +1,4 @@
-FROM node:20.1-alpine3.16
+FROM node:16-alpine
 
 RUN apk add --no-cache bash>5.1.16 git>2.42.0
 
