@@ -128,7 +128,7 @@ handle_validate () {
     IFS=' ' read -ra file_command <<< "$file"
     file="${file_command[0]:-}"
     command="${file_command[1]:-}"
-    parameters="${file_command[2]:-}"
+    parameters="${file_command[@]:2}"
 
     if [ $command == "validate" ]; then
       echo -e "${BLUE}File:${NC}" "$file"
@@ -164,7 +164,7 @@ handle_optimize () {
     IFS=' ' read -ra file_command <<< "$file"
     file="${file_command[0]:-}"
     command="${file_command[1]:-}"
-    parameters="${file_command[2]:-}"
+    parameters="${file_command[@]:2}"
 
     if [ $command == "optimize" ]; then
       echo -e "${BLUE}File:${NC}" "$file"
@@ -225,7 +225,8 @@ handle_generate () {
           continue
         fi
 
-        parameters="${file_command[4]:-}"
+        # Rest of it is in parameters
+        parameters="${file_command[@]:4}"
         echo -e "${BLUE}Parameters:${NC}" "$parameters"
 
         echo -e "${BLUE}Executing command:${NC}" "asyncapi generate models $language $file $parameters"
@@ -241,7 +242,8 @@ handle_generate () {
           continue
         fi
 
-        parameters="${file_command[4]:-}"
+        # Rest of it is in parameters
+        parameters="${file_command[@]:4}"
         echo -e "${BLUE}Parameters:${NC}" "$parameters"
 
         echo -e "${BLUE}Executing command:${NC}" "asyncapi generate fromTemplate $file $template $parameters"

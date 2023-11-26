@@ -1,20 +1,19 @@
 {
-  "$schema": "./config.schema.json",
   "files": [
     {
       "file": "./asyncapi.yml",
       "command": "validate",
-      "parameters": ""
+      "parameters": "--force-write -o ./output"
     },
     {
-      "file": "./asyncapi.yml",
+      "file": "./test/dummy.yml",
       "command": "generate",
       "type": "template",
-      "parameters": "",
+      "parameters": "--force-write -o ./output",
       "template": "@asyncapi/html-template"
     }, 
     {
-      "file": "./asyncapi.yml",
+      "file": "./test/asyncapi.yml",
       "command": "generate",
       "type": "model",
       "language": "typescript",

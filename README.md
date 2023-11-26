@@ -3,33 +3,157 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-This action generates whatever you want using your AsyncAPI document. It uses [AsyncAPI Generator](https://github.com/asyncapi/generator/).
+This action exposes the [AsyncAPI CLI](https://github.com/asyncapi/cli). It allows you to generate documentation, validate AsyncAPI documents, convert between different AsyncAPI versions and much more.
 
 ## Inputs
 
-### `template`
+### `cli_version`
 
-Template for the generator. Official templates are listed here https://github.com/asyncapi/generator#list-of-official-generator-templates. You can pass template as npm package, url to git repository, link to tar file or local template.
+Version of the AsyncAPI CLI you wish to use. You can find all available versions [here](https://github.com/asyncapi/cli/releases). 
 
-**Default** points to `@asyncapi/markdown-template@0.10.0` template.
+**Default** points to the`latest` version.
 
-> We recommend to always specify the version of the template to not encounter any issues with the action in case of release of the template that is not compatible with given version of the generator.
+> [!TIP]
+> We recommend to always specify the version of the CLI to not encounter any issues with the action in case of release of the CLI is not compatible with your workflow.
 
-### `filepath`
+### `command`
 
-Location of the AsyncAPI document.
+Command that you wish to run. You can find all available commands Available commands are:
+- `generate` - generates documentation from AsyncAPI document
+- `validate` - validates AsyncAPI document
+- `optimize` - optimizes AsyncAPI document
+- `custom` - allows you to run any command that is available in the AsyncAPI CLI. You can find all available commands [here](https://www.asyncapi.com/docs/tools/cli/usage).
 
-**Default** expects `asyncapi.yml` in the root of the working directory.
+**Default** points to `generate` command.
 
-### `parameters`
+> [!IMPORTANT]
+> In case you want to use `custom` command, you need to pass an array of commands to the [`custom_command`](#custom_command) input.
+> For example, if you want to run `asyncapi bundle ./asyncapi.yaml --output final-asyncapi.yaml` you need to pass `["bundle ./asyncapi.yaml --output final-asyncapi.yaml"]` to the `custom_command` input.
 
-The template that you use might support and even require specific parameters to be passed to the template for the generation.
+### `custom_command`
 
-### `output`
+In case you want to use `custom` commands, you need to pass an array of commands to this input.
 
-Directory where to put the generated files.
+**Default** points to '' (empty string).
 
-**Default** points to `output` directory in the working directory.
+Sample usage:
+
+```yaml
+- name: Generating HTML from my AsyncAPI document
+  uses: docker://asyncapi/github-action-for-cli:2.0.0
+  with:
+    command: custom
+    custom_command: |
+      - bundle ./asyncapi.yaml --output final-asyncapi.yaml;
+      - validate ./final-asyncapi.yaml;
+      - generate ./final-asyncapi.yaml @asyncapi/html-template@0.15.4;
+```
+
+This passes three commands to the action in the following format:
+
+```yaml
+'- bundle ./asyncapi.yaml --output final-asyncapi.yaml; - validate ./final-asyncapi.yaml; - generate ./final-asyncapi.yaml @asyncapi/html-template@0.15.4;'
+```
+
+> [!CAUTION]
+> Format of the commands is very important. Each command needs to be separated by `;` and each command needs to start with `- ` like you are passing an array of commands, (but you are not its just a string due to `|` in YAML).
+
+### `config_file`
+
+Path to the AsyncAPI CLI configuration file. You can find more information about the configuration file [here](#configuration-file).
+
+The configuration file is optional. If you do not pass it, the action will use the default configuration file.
+
+**Default** points to `action-config.json` in the root of the working directory.
+
+<hr >
+
+## Configuration file
+
+The configuration file is a JSON file that contains all the information that you would need to run the AsyncAPI CLI. The file is optional. If you do not pass it, the action will use the [default configuration file](./action-config.json).
+
+The configuration file should follow this [schema](./config.schema.json) and this should be added to the root of the configuration file.
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/asyncapi/asyncapi-config/v2.0.0/schema.json"
+}
+```
+
+### Schema Overview
+
+- **`files`** (Array): The list of files to be processed by the GitHub Action for CLI.
+
+  Each item in the array consists of:
+  
+  - **`file`** (String): The file to be processed by the GitHub Action for CLI. Example: `"./asyncapi.yaml"`
+  
+  - **`command`** (String): The command to be executed by the GitHub Action for CLI. It can be one of the following:
+    - _"generate"_
+    - _"validate"_
+    - _"optimize"_
+    - _"custom"_
+
+  - **`parameters`** (String): Additional parameters to be passed to the command. Example: `"--output ./output"`
+
+  - **`type`** (String): Type of generation to be executed by the CLI. Required if `command` is `"generate"`. It can be:
+    - _"template"_
+    - _"model"_
+
+  - **`language`** (String): Language in which the models should be generated. Required if `command` is `"generate"` and `type` is `"model"`. It can be:
+    - _"typescript"_
+    - _"csharp"_
+    - _"golang"_
+    - _"java"_
+    - _"javascript"_
+    - _"dart"_
+    - _"python"_
+    - _"rust"_
+    - _"kotlin"_
+    - _"php"_
+    - _"cplusplus"_
+
+  - **`template`** (String): Template to be used for generation. Required if `command` is `"generate"` and `type` is `"template"`. Example: `"@asyncapi/html-template"`
+
+
+### Example:-
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/asyncapi/asyncapi-config/v2.0.0/schema.json",
+  "files": [
+    {
+      "file": "./asyncapi.yaml",
+      "command": "generate",
+      "parameters": "--output ./output",
+      "type": "template",
+      "template": "@asyncapi/html-template"
+    },
+    {
+      "file": "./asyncapi.yaml",
+      "command": "generate",
+      "parameters": "--output ./output",
+      "type": "model",
+      "language": "typescript"
+    },
+    {
+      "file": "./asyncapi.yaml",
+      "command": "validate",
+      "parameters": ""
+    }
+  ]
+}
+```
+
+> [!WARNING]
+> ### Validation Constraints
+> - `files` is required.
+> - Each item in `files` must include `file` and `command`.
+> - If `command` is **"generate"**, then **type** is required.
+>   - If **type** is **"model"**, then **language** is required.
+>   - If **type** is **"template"**, then **template** is required.
+
+<hr >
 
 ## Example usage
 
@@ -39,7 +163,7 @@ In case all defaults are fine for you, just add such step:
 
 ```yaml
 - name: Generating Markdown from my AsyncAPI document
-  uses: docker://asyncapi/github-action-for-generator:2.0.0
+  uses: docker://asyncapi/github-action-for-cli:3.0.0
 ```
 
 ### Using all possible inputs
@@ -48,17 +172,42 @@ In case you do not want to use defaults, you for example want to use different t
 
 ```yaml
 - name: Generating HTML from my AsyncAPI document
-  uses: docker://asyncapi/github-action-for-generator:2.0.0
+  uses: docker://asyncapi/github-action-for-cli:3.0.0
   with:
-    template: '@asyncapi/html-template@0.15.4'  #In case of template from npm, because of @ it must be in quotes
-    filepath: docs/api/my-asyncapi.yml
-    parameters: baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
-    output: generated-html
+    cli_version: 1.0.0
+    command: generate
+    config_file: ./asyncapi-config.json
+    custom_command: |
+      - bundle ./asyncapi.yaml --output final-asyncapi.yaml;
+      - validate ./final-asyncapi.yaml;
+      - generate ./final-asyncapi.yaml @asyncapi/html-template@0.15.4;
 ```
 
 ### Example workflow with publishing generated HTML to GitHub Pages
 
 In case you want to validate your asyncapi file first, and also send generated HTML to GitHub Pages this is how full workflow could look like:
+
+#### Config File
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/asyncapi/asyncapi-config/v2.0.0/schema.json",
+  "files": [
+    {
+      "file": "./docs/api/my-asyncapi.yml",
+      "command": "validate",                  // Validate AsyncAPI document first
+      "parameters": ""
+    },
+    {
+      "file": "./docs/api/my-asyncapi.yml",
+      "command": "generate",
+      "parameters": "--param baseHref=/test-experiment/ sidebarOrganization=byTags --output ./generated-html", //Generate HTML with some parameters in generated-html folder with baseHref and sidebarOrganization parameters.
+      "type": "template",
+      "template": "@asyncapi/html-template@0.9.0" //In case of template from npm. Or can use a link.
+    }
+  ]
+}
+```
 
 ```yaml
 name: AsyncAPI documents processing
@@ -75,20 +224,14 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
       
-    #Using another action for AsyncAPI for validation
-    - name: Validating AsyncAPI document
-      uses: WaleedAshraf/asyncapi-github-action@v0.0.9
-      with:
-        filepath: docs/api/my-asyncapi.yml
-      
     #In case you do not want to use defaults, you for example want to use different template
     - name: Generating HTML from my AsyncAPI document
-      uses: docker://asyncapi/github-action-for-generator:2.0.0 #always use latest tag as each is pushed to docker
+      uses: docker://asyncapi/github-action-for-cli:3.0.0
       with:
-        template: '@asyncapi/html-template@0.9.0'  #In case of template from npm, because of @ it must be in quotes
-        filepath: docs/api/my-asyncapi.yml
-        parameters: baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
-        output: generated-html
+        cli_version: 1.0.0
+        command: generate
+        config_file: ./docs/api/asyncapi-config.json
+        
       
     #Using another action that takes generated HTML and pushes it to GH Pages
     - name: Deploy GH page
@@ -99,9 +242,11 @@ jobs:
         FOLDER: generated-html
 ```
 
+
 ## Troubleshooting
 
 You can enable more log information in GitHub Action by adding `ACTIONS_STEP_DEBUG` secret to repository where you want to use this action. Set the value of this secret to `true` and you''ll notice more debug logs from this action.
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
