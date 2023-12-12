@@ -1,8 +1,9 @@
-FROM node:16-alpine
+FROM node:18-alpine
 
 RUN apk add --no-cache bash>5.1.16 git>2.42.0
 
-RUN npm install -g @asyncapi/cli
+# Installing latest released npm package
+RUN npm install --ignore-scripts -g @asyncapi/cli
 
 COPY entrypoint.sh /entrypoint.sh
 

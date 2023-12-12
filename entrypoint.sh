@@ -99,7 +99,7 @@ handle_generate () {
 
   if [ ! -f "$FILEPATH" ]; then 
     handle_file_error "$FILEPATH"
-    continue
+    exit 1
   fi
 
   if [ -n "$LANGUAGE" ]; then
