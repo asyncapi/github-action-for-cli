@@ -18,10 +18,9 @@ LANGUAGE="$5"
 OUTPUT="$6"
 PARAMETERS="$7"
 CUSTOM_COMMAND="$8"
-VERBOSE="$9"
 
 echo "::group::Debug information"
-if [ -n "$CLI_VERSION" ]; then
+if [ -n "$CLI_VERSION" ] && [ ! "$CLI_VERSION" == "latest" ]; then
   echo -e "${BLUE}CLI version:${NC}" "$CLI_VERSION"
   # Check if the CLI version is already installed or not
   output=$(asyncapi --version 2>&1)
@@ -57,7 +56,6 @@ echo -e "${BLUE}Template:${NC}" "$TEMPLATE"
 echo -e "${BLUE}Language:${NC}" "$LANGUAGE"
 echo -e "${BLUE}Output:${NC}" "$OUTPUT"
 echo -e "${BLUE}Parameters:${NC}" "$PARAMETERS"
-echo -e "${BLUE}Verbose:${NC}" "$VERBOSE"
 echo "::endgroup::"
 
 handle_file_error () {

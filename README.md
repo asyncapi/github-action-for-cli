@@ -9,12 +9,12 @@ This action exposes the [AsyncAPI CLI](https://github.com/asyncapi/cli). It allo
 
 ### `cli_version`
 
-Version of the AsyncAPI CLI you wish to use. You can find all available versions [here](https://github.com/asyncapi/cli/releases). 
+Version of the AsyncAPI CLI you wish to use. You can find all available versions [here](https://github.com/asyncapi/cli/releases). Recommended leave it out of the inputs and use the default value.
 
 **Default** points to the`latest` version.
 
 > [!TIP]
-> We recommend to always specify the version of the CLI to not encounter any issues with the action in case of release of the CLI is not compatible with your workflow.
+> We recommend to default to `latest` version. This way there is no overhead with the script updating the CLI version. As it takes a lot of time to update the CLI version, we recommend to update it only when you need to use another one for compatibility reasons.
 
 ### `command`
 
@@ -27,12 +27,12 @@ Command that you wish to run. You can find all available commands Available comm
 **Default** points to `generate` command.
 
 > [!IMPORTANT]
-> In case you want to use `custom` command, you need to pass an array of commands to the [`custom_command`](#custom_command) input.
-> For example, if you want to run `asyncapi bundle ./asyncapi.yaml --output final-asyncapi.yaml` you need to pass `["bundle ./asyncapi.yaml --output final-asyncapi.yaml"]` to the `custom_command` input.
+> In case you want to use `custom` command, you need to pass an array of commands to the [`custom_command`](#custom_command) input. Although passing command is not required, it is recommended to pass it to avoid any issues later on.
+> For example, if you want to run `asyncapi bundle ./asyncapi.yaml --output final-asyncapi.yaml` you need to pass `"bundle ./asyncapi.yaml --output final-asyncapi.yaml" to the `custom_command` input.
 
 ### `custom_command`
 
-In case you want to use `custom` commands, you need to pass an array of commands to this input.
+In case you want to use `custom` command you need to pass the command that you want to run in this input. You can find all available commands [here](https://www.asyncapi.com/docs/tools/cli/usage). 
 
 **Default** points to '' (empty string).
 
@@ -42,118 +42,50 @@ Sample usage:
 - name: Generating HTML from my AsyncAPI document
   uses: docker://asyncapi/github-action-for-cli:2.0.0
   with:
-    command: custom
-    custom_command: |
-      - bundle ./asyncapi.yaml --output final-asyncapi.yaml;
-      - validate ./final-asyncapi.yaml;
-      - generate ./final-asyncapi.yaml @asyncapi/html-template@0.15.4;
-```
-
-This passes three commands to the action in the following format:
-
-```yaml
-'- bundle ./asyncapi.yaml --output final-asyncapi.yaml; - validate ./final-asyncapi.yaml; - generate ./final-asyncapi.yaml @asyncapi/html-template@0.15.4;'
+    custom_command: bundle ./asyncapi.yaml --output final-asyncapi.yaml
 ```
 
 > [!CAUTION]
-> Format of the commands is very important. Each command needs to be separated by `;` and each command needs to start with `- ` like you are passing an array of commands, (but you are not its just a string due to `|` in YAML).
-
-### `config_file`
-
-Path to the AsyncAPI CLI configuration file. You can find more information about the configuration file [here](#configuration-file).
-
-The configuration file is optional. If you do not pass it, the action will use the default configuration file.
-
-**Default** points to `action-config.json` in the root of the working directory.
-
-<hr >
-
-## Configuration file
-
-The configuration file is a JSON file that contains all the information that you would need to run the AsyncAPI CLI. The file is optional. If you do not pass it, the action will use the [default configuration file](./action-config.json).
-
-The configuration file should follow this [schema](./config.schema.json) and this should be added to the root of the configuration file.
-
-```json
-{
-  "$schema": "https://raw.githubusercontent.com/asyncapi/asyncapi-config/v2.0.0/schema.json"
-}
-```
-
-### Schema Overview
-
-- **`files`** (Array): The list of files to be processed by the GitHub Action for CLI.
-
-  Each item in the array consists of:
-  
-  - **`file`** (String): The file to be processed by the GitHub Action for CLI. Example: `"./asyncapi.yaml"`
-  
-  - **`command`** (String): The command to be executed by the GitHub Action for CLI. It can be one of the following:
-    - _"generate"_
-    - _"validate"_
-    - _"optimize"_
-    - _"custom"_
-
-  - **`parameters`** (String): Additional parameters to be passed to the command. Example: `"--output ./output"`
-
-  - **`type`** (String): Type of generation to be executed by the CLI. Required if `command` is `"generate"`. It can be:
-    - _"template"_
-    - _"model"_
-
-  - **`language`** (String): Language in which the models should be generated. Required if `command` is `"generate"` and `type` is `"model"`. It can be:
-    - _"typescript"_
-    - _"csharp"_
-    - _"golang"_
-    - _"java"_
-    - _"javascript"_
-    - _"dart"_
-    - _"python"_
-    - _"rust"_
-    - _"kotlin"_
-    - _"php"_
-    - _"cplusplus"_
-
-  - **`template`** (String): Template to be used for generation. Required if `command` is `"generate"` and `type` is `"template"`. Example: `"@asyncapi/html-template"`
+> You have to pass the whole command as a string including the parameters and the command itself.
+> It will run like this: `asyncapi <custom_command>`
 
 
-### Example:-
+### `filepath`
 
-```json
-{
-  "$schema": "https://raw.githubusercontent.com/asyncapi/asyncapi-config/v2.0.0/schema.json",
-  "files": [
-    {
-      "file": "./asyncapi.yaml",
-      "command": "generate",
-      "parameters": "--output ./output",
-      "type": "template",
-      "template": "@asyncapi/html-template"
-    },
-    {
-      "file": "./asyncapi.yaml",
-      "command": "generate",
-      "parameters": "--output ./output",
-      "type": "model",
-      "language": "typescript"
-    },
-    {
-      "file": "./asyncapi.yaml",
-      "command": "validate",
-      "parameters": ""
-    }
-  ]
-}
-```
+Path to the AsyncAPI document that you want to process.   
+
+**Default** expects the AsyncAPI document to be in the root of the repository and named `asyncapi.yaml`.
+
+### `template`
+
+Template for the generator. Official templates are listed here https://github.com/asyncapi/generator#list-of-official-generator-templates. You can pass template as npm package, url to git repository, link to tar file or local template.
+
+**Default** points to `@asyncapi/markdown-template@0.10.0` template.
+
+> [!TIP]
+> We recommend to always specify the version of the template to not encounter any issues with the action in case of release of the template that is not compatible with given version of the generator.
+
+### `language`
+
+Specifies the language to be used for the generated models. The value must be a valid language name supported by [modelina](https://github.com/asyncapi/modelina). 
+
+**Default** is not set.
 
 > [!WARNING]
-> ### Validation Constraints
-> - `files` is required.
-> - Each item in `files` must include `file` and `command`.
-> - If `command` is **"generate"**, then **type** is required.
->   - If **type** is **"model"**, then **language** is required.
->   - If **type** is **"template"**, then **template** is required.
+> Either `language` or `template` must be set else an error will be thrown. 
+> The action will return an error if the language is not supported by [modelina](https://github.com/asyncapi/modelina).
 
-<hr >
+### `output`
+
+Path to the output directory.
+
+**Default** points to `output` directory in the root of the repository.
+
+### `parameters`
+
+The command that you use might support and even require specific parameters to be passed to the CLI for the generation. You can find all available parameters [here](https://www.asyncapi.com/docs/tools/cli/usage).
+
+**Default** points to '' (empty string).
 
 ## Example usage
 
@@ -174,40 +106,16 @@ In case you do not want to use defaults, you for example want to use different t
 - name: Generating HTML from my AsyncAPI document
   uses: docker://asyncapi/github-action-for-cli:3.0.0
   with:
-    cli_version: 1.0.0
     command: generate
-    config_file: ./asyncapi-config.json
-    custom_command: |
-      - bundle ./asyncapi.yaml --output final-asyncapi.yaml;
-      - validate ./final-asyncapi.yaml;
-      - generate ./final-asyncapi.yaml @asyncapi/html-template@0.15.4;
+    filepath: ./docs/api/asyncapi.yaml
+    template: "@asyncapi/html-template@0.9.0" #In case of template from npm. Or can use a link.
+    output: ./generated-html
+    parameters: "baseHref=/test-experiment/ sidebarOrganization=byTags"
 ```
 
 ### Example workflow with publishing generated HTML to GitHub Pages
 
 In case you want to validate your asyncapi file first, and also send generated HTML to GitHub Pages this is how full workflow could look like:
-
-#### Config File
-
-```json
-{
-  "$schema": "https://raw.githubusercontent.com/asyncapi/asyncapi-config/v2.0.0/schema.json",
-  "files": [
-    {
-      "file": "./docs/api/my-asyncapi.yml",
-      "command": "validate",                  // Validate AsyncAPI document first
-      "parameters": ""
-    },
-    {
-      "file": "./docs/api/my-asyncapi.yml",
-      "command": "generate",
-      "parameters": "--param baseHref=/test-experiment/ sidebarOrganization=byTags --output ./generated-html", //Generate HTML with some parameters in generated-html folder with baseHref and sidebarOrganization parameters.
-      "type": "template",
-      "template": "@asyncapi/html-template@0.9.0" //In case of template from npm. Or can use a link.
-    }
-  ]
-}
-```
 
 ```yaml
 name: AsyncAPI documents processing
@@ -228,10 +136,10 @@ jobs:
     - name: Generating HTML from my AsyncAPI document
       uses: docker://asyncapi/github-action-for-cli:3.0.0
       with:
-        cli_version: 1.0.0
-        command: generate
-        config_file: ./docs/api/asyncapi-config.json
-        
+        template: '@asyncapi/html-template@0.9.0'  #In case of template from npm, because of @ it must be in quotes
+        filepath: docs/api/my-asyncapi.yml
+        parameters: baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
+        output: generated-html
       
     #Using another action that takes generated HTML and pushes it to GH Pages
     - name: Deploy GH page
@@ -242,6 +150,60 @@ jobs:
         FOLDER: generated-html
 ```
 
+### Example workflow for generating models
+
+In case you want to use models generated from your AsyncAPI document, you can use this action to generate them and then use them in your workflow. This is how full workflow could look like:
+
+```yaml
+
+name: AsyncAPI documents processing
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  generate-models:
+    runs-on: ubuntu-latest
+    steps:
+    #"standard step" where repo needs to be checked-out first
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      
+    - name: Generating models from my AsyncAPI document
+      uses: docker://asyncapi/github-action-for-cli:3.0.0
+      with:
+        command: generate
+        filepath: docs/api/my-asyncapi.yml
+        language: typescript
+        output: generated-models
+```
+
+### Example workflow for validating AsyncAPI document changes
+
+In case you want to validate your AsyncAPI document changes, you can use this action to validate them and then use them in your workflow. This is how full workflow could look like:
+
+```yaml
+name: Validate AsyncAPI document
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    #"standard step" where repo needs to be checked-out first
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      
+    - name: Validating AsyncAPI document
+      uses: docker://asyncapi/github-action-for-cli:3.0.0
+      with:
+        command: validate
+        filepath: docs/api/my-asyncapi.yml
+```
 
 ## Troubleshooting
 
