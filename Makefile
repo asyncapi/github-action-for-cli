@@ -1,19 +1,33 @@
-CLI_VERSION = ''
-DEFAULT_COMMAND = generate
-DEFAULT_CONFIG_FILE = ./action-config.json
+DEFAULT_VERSION = ''
+DEFAULT_COMMAND = 'generate'
+TEST_FILEPATH = 'test/asyncapi.yml'
+DEFAULT_TEMPLATE = '@asyncapi/markdown-template@0.10.0'
+DEFAULT_LANGUAGE = ''
+DEFAULT_OUTPUT = 'output'
+DEFAULT_PARAMETERS = ''
 DEFAULT_CUSTOM_COMMANDS = ''
+CUSTOM_COMMANDS = 'validate test/asyncapi.yml'
 DEFAULT_VERBOSE = 'false'
-CUSTOM_COMMANDS = '- validate test/asyncapi.yml; - validate test/specification-invalid.yml > output/error.txt;'
-
-TEST_CONFIG_FILE = ./test/action-config.json
-
-all: test-dev
 
 run:
-	@bash ./entrypoint.sh $(CLI_VERSION) $(DEFAULT_COMMAND) $(DEFAULT_CONFIG_FILE) $(DEFAULT_CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
+	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
 
-run-custom:
-	@bash ./entrypoint.sh $(CLI_VERSION) $(DEFAULT_COMMAND) $(DEFAULT_CONFIG_FILE) $(CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
+test: test-1 test-2 test-3 test-4 test-5 test-6
 
-test-dev:
-	@bash ./entrypoint.sh $(CLI_VERSION) $(DEFAULT_COMMAND) $(TEST_CONFIG_FILE) $(DEFAULT_CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
+test-1:
+	@bash ./entrypoint.sh 1.1.1 $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
+
+test-2:
+	@bash ./entrypoint.sh 1.1.1 'validate' $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
+
+test-3:
+	@bash ./entrypoint.sh 1.1.1 'validate' './test/specification-invalid.yml' $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
+
+test-4:
+	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) 'typescript' './output/custom-output' $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
+
+test-5:
+	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) 'typescript' './output/custom-output' $(DEFAULT_PARAMETERS) $(CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
+
+test-6:
+	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) '' $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) $(DEFAULT_VERBOSE)
