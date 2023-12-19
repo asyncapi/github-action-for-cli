@@ -1,0 +1,27 @@
+{
+  "name": "github-action-for-generator",
+  "version": "3.0.0",
+  "description": "GitHub action to perform various actions on AsyncAPI document using CLI",
+  "main": "entrypoint.sh",
+  "scripts": {
+    "test": "make test",
+    "generate:assets": "echo 'No additional assets need to be generated at the moment'",
+    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
+    "docker:build": "docker build -t asyncapi/github-action-for-generator:latest ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asyncapi/github-action-for-generator.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "AsyncAPI"
+  ],
+  "author": "Lukasz Gornicki <lpgornicki@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/asyncapi/github-action-for-generator/issues"
+  },
+  "homepage": "https://github.com/asyncapi/github-action-for-generator#readme"
+}
