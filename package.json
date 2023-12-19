@@ -2,7 +2,7 @@
   "name": "github-action-for-generator",
   "description": "This is to be used for running tests for the GitHub Action using the MakeFile",
   "scripts": {
-    "test": "make test",
+    "test": "npm install -g @asyncapi/cli && make test",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
     "docker:build": "docker build -t asyncapi/github-action-for-generator:latest ."
   },

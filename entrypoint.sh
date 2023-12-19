@@ -23,7 +23,7 @@ echo "::group::Debug information"
 if [ -n "$CLI_VERSION" ] && [ ! "$CLI_VERSION" == "latest" ]; then
   echo -e "${BLUE}CLI version:${NC}" "$CLI_VERSION"
   # Check if the CLI version is already installed or not
-  output=$(asyncapi --version 2>&1)
+  output=$(asyncapi --version >/dev/null 2>&1)
   # output @asyncapi/cli/1.1.1 linux-x64 node-v20.8.1
   version=$(echo "$output" | cut -d' ' -f1 | cut -d '/' -f3)
   if [ "$version" == "$CLI_VERSION" ]; then
