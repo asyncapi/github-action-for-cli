@@ -23,7 +23,11 @@ echo "::group::Debug information"
 if [ -n "$CLI_VERSION" ] && [ ! "$CLI_VERSION" == "latest" ]; then
   echo -e "${BLUE}CLI version:${NC}" "$CLI_VERSION"
   # Check if the CLI version is already installed or not
-  output=$(asyncapi --version >/dev/null 2>&1)
+  if [ -z $(command -v -- asyncapi) ]; then
+    output=''
+  else
+    output=$(asyncapi --version >/dev/null 2>&1)
+  fi
   # output @asyncapi/cli/1.1.1 linux-x64 node-v20.8.1
   version=$(echo "$output" | cut -d' ' -f1 | cut -d '/' -f3)
   if [ "$version" == "$CLI_VERSION" ]; then
@@ -33,6 +37,10 @@ if [ -n "$CLI_VERSION" ] && [ ! "$CLI_VERSION" == "latest" ]; then
     npm install -g @asyncapi/cli@$CLI_VERSION
   fi
 else
+  if [ -z $(command -v -- asyncapi) ]; then
+    echo -e "${RED}No CLI installation found. Installing the latest one"
+    npm install -g @asyncapi/cli
+  fi
   echo -e "${BLUE}CLI version:${NC}" "latest"
 fi
 echo "::endgroup::"
