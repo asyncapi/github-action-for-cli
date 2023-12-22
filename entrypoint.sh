@@ -12,10 +12,10 @@ RED='\033[0;31m'
 
 CLI_VERSION="$1"
 COMMAND="$2"
-FILEPATH="$3"
+FILEPATH="./$3" # Absolute path to the AsyncAPI file
 TEMPLATE="$4"
 LANGUAGE="$5"
-OUTPUT="$6"
+OUTPUT="./$6" # Absolute path to the output directory
 PARAMETERS="$7"
 CUSTOM_COMMAND="$8"
 
@@ -48,6 +48,8 @@ echo "::endgroup::"
 echo -e "${BLUE}AsyncAPI CLI version:${NC}" "$(asyncapi --version)"
 
 echo -e "${GREEN}Executing AsyncAPI CLI...${NC}"
+
+git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
 if [ -n "$CUSTOM_COMMAND" ]; then
   echo "::group::Debug information" 
@@ -100,14 +102,20 @@ handle_optimize () {
 }
 
 handle_generate () {
-  echo -e "${BLUE}Generating AsyncAPI file...${NC}"
-  echo "::group::Debug information"
+  echo -e "${BLUE}Generating from AsyncAPI file...${NC}"
 
   if [ ! -f "$FILEPATH" ]; then 
     handle_file_error "$FILEPATH"
     exit 1
   fi
 
+  # Check if the output directory exists or not and create it if it doesn't
+  if [ ! -d "$OUTPUT" ]; then
+    mkdir -p "$OUTPUT"
+    echo -e "${BLUE}Created output directory:${NC}" "$OUTPUT"
+  fi
+
+  echo "::group::Debug information"
   if [ -n "$LANGUAGE" ]; then
     echo -e "${BLUE}Executing command:${NC}" "asyncapi generate models $LANGUAGE $FILEPATH -o $OUTPUT $PARAMETERS"
     eval "asyncapi generate models $LANGUAGE $FILEPATH -o $OUTPUT $PARAMETERS"
@@ -118,6 +126,7 @@ handle_generate () {
     echo -e "${RED}Invalid configuration:${NC} Either language or template must be specified."
     exit 1
   fi
+  echo "::endgroup::"
 }
 
 if [ $COMMAND == "validate" ]; then

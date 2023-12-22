@@ -8,6 +8,9 @@ DEFAULT_PARAMETERS = ''
 DEFAULT_CUSTOM_COMMANDS = ''
 CUSTOM_COMMANDS = 'validate test/asyncapi.yml'
 
+# Add env variables to the shell
+export GITHUB_WORKSPACE = $(shell pwd)
+
 run:
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) 
 

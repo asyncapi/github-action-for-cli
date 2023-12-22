@@ -14,5 +14,105 @@ jobs:
       - name: Test GitHub Action
         uses: ./
         with:
-          filepath: ./test/asyncapi.yml
-    
+          filepath: test/asyncapi.yml
+      - name: Assert GitHub Action
+        run: |
+          echo "Asserting GitHub Action"
+          if [ -f "./output/asyncapi.md" ]; then
+            echo "Files exist"
+          else
+            echo "Files do not exist:- ./output/asyncapi.md"
+            echo "Action failed"
+            exit 1
+          fi
+
+  test-validate-success:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GitHub Action
+        uses: ./
+        with:
+          filepath: test/asyncapi.yml
+          command: validate
+
+  test-custom-command:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GitHub Action
+        uses: ./
+        with:
+          custom_command: "generate models typescript ./test/asyncapi.yml -o ./output"
+      - name: Assert GitHub Action
+        run: |
+          echo "Asserting GitHub Action"
+          if [ -f "./output/AnonymousSchema_1.ts" ]; then
+            echo "Models have been generated"
+          else
+            echo "Models have not been generated"
+            echo "Action failed"
+            exit 1
+          fi
+  
+  test-custom-output:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GitHub Action
+        uses: ./
+        with:
+          filepath: test/asyncapi.yml
+          output: custom-output
+      - name: Assert GitHub Action
+        run: |
+          echo "Asserting GitHub Action"
+          if [ -f "./custom-output/asyncapi.md" ]; then
+            echo "Files exist"
+          else
+            echo "Files do not exist:- ./custom-output/asyncapi.md"
+            echo "Action failed"
+            exit 1
+          fi
+  
+  test-file-not-found:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GitHub Action
+        id: test
+        uses: ./
+        with:
+          filepath: non_existent_file.yml
+        continue-on-error: true
+      - name: Check for failure
+        run: if [ "${{ steps.test.outcome }}" == "success" ]; then exit 1; fi
+  
+  test-invalid-input:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GitHub Action
+        id: test
+        uses: ./
+        with:
+          filepath: test/asyncapi.yml
+          command: generate # No template or language specified
+          template: '' # Empty string
+        continue-on-error: true
+      - name: Check for failure
+        run: if [ "${{ steps.test.outcome }}" == "success" ]; then exit 1; fi
+
+  send-to-slack:
+    if: failure()
+    needs: [test-defaults, test-validate-success, test-custom-command, test-custom-output, test-file-not-found, test-invalid-input]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report workflow run status to Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,action,workflow
+          text: 'Unable to bump the version in package.json after the release'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_FAIL_NOTIFY }}
