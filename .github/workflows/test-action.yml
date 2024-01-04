@@ -118,3 +118,68 @@ jobs:
           else
             echo "Test Success: generate command threw an error as expected"
           fi
+
+  test-optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GitHub Action
+        uses: ./
+        with:
+          filepath: test/unoptimized.yml
+          command: optimize
+          parameters: '-o new-file --no-tty'
+      - name: Assert GitHub Action
+        run: |
+          echo "Listing all files"
+          ls -R
+          echo "Asserting GitHub Action"
+          if [ -f "./test/unoptimized_optimized.yml" ]; then
+            echo "The specified file has been optimized"
+          else
+            echo "The specified file has not been optimized"
+            echo "Action failed"
+            exit 1
+          fi
+      
+  test-bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GitHub Action
+        uses: ./
+        with:
+          custom_command: 'bundle ./test/bundle/asyncapi.yaml ./test/bundle/features.yaml --base ./test/bundle/asyncapi.yaml --reference-into-components -o ./output/bundle/asyncapi.yaml'
+      - name: Assert GitHub Action
+        run: |
+          echo "Listing all files"
+          ls -R
+          echo "Asserting GitHub Action"
+          if [ -f "./output/bundle/asyncapi.yaml" ]; then
+            echo "The specified files have been bundled"
+          else
+            echo "The specified files have not been bundled"
+            echo "Action failed"
+            exit 1
+          fi
+  
+  test-convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GitHub Action
+        uses: ./
+        with:
+          custom_command: 'convert ./test/asyncapi.yml -o ./output/convert/asyncapi.yaml'
+      - name: Assert GitHub Action
+        run: |
+          echo "Listing all files"
+          ls -R
+          echo "Asserting GitHub Action"
+          if [ -f "./output/convert/asyncapi.yaml" ]; then
+            echo "The specified file has been converted"
+          else
+            echo "The specified file has not been converted"
+            echo "Action failed"
+            exit 1
+          fi

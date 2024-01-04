@@ -14,7 +14,7 @@ export GITHUB_WORKSPACE = $(shell pwd)
 run:
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) 
 
-test: test-default test-validate-success test-validate-fail test-custom-output test-custom-commands
+test: test-default test-validate-success test-validate-fail test-custom-output test-custom-commands test-optimize test-bundle test-convert
 
 # Test cases
 
@@ -41,3 +41,19 @@ test-custom-commands:
 # Tests if the action fails when the input is invalid (e.g. invalid template as is the case here) 
 fail-test:
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) '' $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) 
+
+# Tests if the action optimizes the specification
+test-optimize:
+	@bash ./entrypoint.sh $(DEFAULT_VERSION) 'optimize' 'test/unoptimized.yml' $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) '-o new-file --no-tty' $(DEFAULT_CUSTOM_COMMANDS)
+
+# Tests if the action can bundle the specification with custom commands
+BUNDLE_COMMAND='bundle ./test/bundle/asyncapi.yaml ./test/bundle/features.yaml --base ./test/bundle/asyncapi.yaml --reference-into-components -o ./output/bundle/asyncapi.yaml'
+test-bundle:
+	mkdir -p ./output/bundle
+	@bash ./entrypoint.sh $(DEFAULT_VERSION) 'bundle' 'test/bundle/asyncapi.yaml' $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) '-o output/bundle/asyncapi.yaml' $(BUNDLE_COMMAND)
+
+# Tests if the action can convert the specification with custom commands
+CONVERT_COMMAND='convert ./test/asyncapi.yml -o ./output/convert/asyncapi.yaml'
+test-convert:
+	mkdir -p ./output/convert
+	@bash ./entrypoint.sh $(DEFAULT_VERSION) 'convert' 'test/asyncapi.yml' $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) '-o output/convert/asyncapi.yaml' $(CONVERT_COMMAND)
