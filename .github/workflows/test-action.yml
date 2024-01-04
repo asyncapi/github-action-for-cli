@@ -1,8 +1,6 @@
-name: Test GitHub Action
+name: PR testing of CLI action
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
 
@@ -17,6 +15,8 @@ jobs:
           filepath: test/asyncapi.yml
       - name: Assert GitHub Action
         run: |
+          echo "Listing all files"  
+          ls -R  
           echo "Asserting GitHub Action"
           if [ -f "./output/asyncapi.md" ]; then
             echo "Files exist"
@@ -46,6 +46,8 @@ jobs:
           custom_command: "generate models typescript ./test/asyncapi.yml -o ./output"
       - name: Assert GitHub Action
         run: |
+          echo "Listing all files"
+          ls -R
           echo "Asserting GitHub Action"
           if [ -f "./output/AnonymousSchema_1.ts" ]; then
             echo "Models have been generated"
@@ -66,6 +68,8 @@ jobs:
           output: custom-output
       - name: Assert GitHub Action
         run: |
+          echo "Listing all files"
+          ls -R
           echo "Asserting GitHub Action"
           if [ -f "./custom-output/asyncapi.md" ]; then
             echo "Files exist"
@@ -86,7 +90,13 @@ jobs:
           filepath: non_existent_file.yml
         continue-on-error: true
       - name: Check for failure
-        run: if [ "${{ steps.test.outcome }}" == "success" ]; then exit 1; fi
+        run: |
+          if [ "${{ steps.test.outcome }}" == "success" ]; then
+            echo "Test Failure: non_existent_file.yml should throw an error but did not"
+            exit 1
+          else
+            echo "Test Success: non_existent_file.yml threw an error as expected"
+          fi
   
   test-invalid-input:
     runs-on: ubuntu-latest
@@ -101,18 +111,10 @@ jobs:
           template: '' # Empty string
         continue-on-error: true
       - name: Check for failure
-        run: if [ "${{ steps.test.outcome }}" == "success" ]; then exit 1; fi
-
-  send-to-slack:
-    if: failure()
-    needs: [test-defaults, test-validate-success, test-custom-command, test-custom-output, test-file-not-found, test-invalid-input]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Report workflow run status to Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,action,workflow
-          text: 'Unable to bump the version in package.json after the release'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_FAIL_NOTIFY }}
+        run: |
+          if [ "${{ steps.test.outcome }}" == "success" ]; then
+            echo "Test Failure: generate command should throw an error as no template or language specified but did not"
+            exit 1
+          else
+            echo "Test Success: generate command threw an error as expected"
+          fi
