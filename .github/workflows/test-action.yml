@@ -176,7 +176,7 @@ jobs:
         with:
           command: convert
           filepath: test/asyncapi.yml 
-          output: output/convert/asyncapi.yaml'
+          output: output/convert/asyncapi.yaml
       - name: Assert GitHub Action
         run: |
           echo "Listing all files"
