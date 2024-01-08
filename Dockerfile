@@ -13,8 +13,4 @@ COPY entrypoint.sh /entrypoint.sh
 # Make the bash file executable
 RUN chmod +x /entrypoint.sh
 
-# Commented for now because of non-root user can't write to the /github/workspace
-# # Switch to the non-root user
-# USER myuser
-
 ENTRYPOINT ["/entrypoint.sh"]
