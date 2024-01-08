@@ -87,6 +87,9 @@ The command that you use might support and even require specific parameters to b
 
 **Default** points to '' (empty string).
 
+> [!NOTE]
+> For template parameters, you need to pass them as `-p <template_parameters>` as can be seen in CLI documentation.
+
 ## Example usage
 
 ### Basic
@@ -110,8 +113,10 @@ In case you do not want to use defaults, you for example want to use different t
     filepath: ./docs/api/asyncapi.yaml
     template: "@asyncapi/html-template@0.9.0" #In case of template from npm. Or can use a link.
     output: ./generated-html
-    parameters: "baseHref=/test-experiment/ sidebarOrganization=byTags"
+    parameters: "-p baseHref=/test-experiment/ sidebarOrganization=byTags"
 ```
+> [!IMPORTANT]
+> Note the usage of `-p` in `parameters` input. This is required for template parameters, unlike previous versions of this action as the action includes other commands than just `generate`.
 
 ### Example workflow with publishing generated HTML to GitHub Pages
 
@@ -138,7 +143,7 @@ jobs:
       with:
         template: '@asyncapi/html-template@0.9.0'  #In case of template from npm, because of @ it must be in quotes
         filepath: docs/api/my-asyncapi.yml
-        parameters: baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
+        parameters: -p baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
         output: generated-html
       
     #Using another action that takes generated HTML and pushes it to GH Pages
