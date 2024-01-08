@@ -53,7 +53,5 @@ test-bundle:
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) 'bundle' 'test/bundle/asyncapi.yaml' $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) '-o output/bundle/asyncapi.yaml' $(BUNDLE_COMMAND)
 
 # Tests if the action can convert the specification with custom commands
-CONVERT_COMMAND='convert ./test/asyncapi.yml -o ./output/convert/asyncapi.yaml'
 test-convert:
-	mkdir -p ./output/convert
-	@bash ./entrypoint.sh $(DEFAULT_VERSION) 'convert' 'test/asyncapi.yml' $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) '-o output/convert/asyncapi.yaml' $(CONVERT_COMMAND)
+	@bash ./entrypoint.sh $(DEFAULT_VERSION) 'convert' 'test/asyncapi.yml' $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) 'output/convert/asyncapi.yaml' '' $(DEFAULT_CUSTOM_COMMANDS)

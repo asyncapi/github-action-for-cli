@@ -43,6 +43,8 @@ jobs:
       - name: Test GitHub Action
         uses: ./
         with:
+          # Custom command to generate models
+          # Note: You can use command itself to generate models, but this is just an example for testing custom commands
           custom_command: "generate models typescript ./test/asyncapi.yml -o ./output"
       - name: Assert GitHub Action
         run: |
@@ -169,12 +171,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Make output directory
-        run: mkdir -p ./output/convert
       - name: Test GitHub Action
         uses: ./
         with:
-          custom_command: 'convert ./test/asyncapi.yml -o ./output/convert/asyncapi.yaml'
+          command: convert
+          filepath: test/asyncapi.yml 
+          output: output/convert/asyncapi.yaml'
       - name: Assert GitHub Action
         run: |
           echo "Listing all files"

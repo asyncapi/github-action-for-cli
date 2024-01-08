@@ -110,9 +110,11 @@ handle_generate () {
   fi
 
   # Check if the output directory exists or not and create it if it doesn't
-  if [ ! -d "$OUTPUT" ]; then
-    mkdir -p "$OUTPUT"
-    echo -e "${BLUE}Created output directory:${NC}" "$OUTPUT"
+  output_dir=$(dirname "$OUTPUT")
+
+  if [ ! -d "$output_dir" ]; then
+    mkdir -p "$output_dir"
+    echo -e "${BLUE}Created output directory:${NC}" "$output_dir"
   fi
 
   echo "::group::Debug information"
@@ -129,12 +131,40 @@ handle_generate () {
   echo "::endgroup::"
 }
 
+handle_convert () {
+  echo -e "${BLUE}Converting AsyncAPI file...${NC}"
+  echo "::group::Debug information"
+
+  if [ ! -f "$FILEPATH" ]; then 
+    handle_file_error "$FILEPATH"
+    exit 1
+  fi
+
+  if [ -z "$OUTPUT" ]; then
+    echo -e "${BLUE}Executing command:${NC}" "asyncapi convert $FILEPATH $PARAMETERS"
+    eval "asyncapi convert $FILEPATH $PARAMETERS"
+  else
+    # Create the output directory if it doesn't exist
+    output_dir=$(dirname "$OUTPUT")
+
+    if [ ! -d "$output_dir" ]; then
+      mkdir -p "$output_dir"
+      echo -e "${BLUE}Created output directory:${NC}" "$output_dir"
+    fi
+
+    echo -e "${BLUE}Executing command:${NC}" "asyncapi convert $FILEPATH -o $OUTPUT $PARAMETERS"
+    eval "asyncapi convert $FILEPATH -o $OUTPUT $PARAMETERS"
+  fi
+}
+
 if [ $COMMAND == "validate" ]; then
   handle_validate
 elif [ $COMMAND == "optimize" ]; then
   handle_optimize
 elif [ $COMMAND == "generate" ]; then
   handle_generate
+elif [ $COMMAND == "convert" ]; then
+  handle_convert
 else
   echo -e "${RED}Invalid command:${NC}" "$COMMAND"
   echo -e "${YELLOW}NOTE: Command can be either validate, optimize or generate.${NC}"

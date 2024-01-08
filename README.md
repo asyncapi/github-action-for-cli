@@ -22,6 +22,7 @@ Command that you wish to run. You can find all available commands Available comm
 - `generate` - generates documentation from AsyncAPI document
 - `validate` - validates AsyncAPI document
 - `optimize` - optimizes AsyncAPI document
+- `convert` - converts AsyncAPI document to another version
 - `custom` - allows you to run any command that is available in the AsyncAPI CLI. You can find all available commands [here](https://www.asyncapi.com/docs/tools/cli/usage).
 
 **Default** points to `generate` command.
@@ -77,7 +78,7 @@ Specifies the language to be used for the generated models. The value must be a 
 
 ### `output`
 
-Path to the output directory.
+Path to the output directory. Can be used for `generate` and `convert` commands.
 
 **Default** points to `output` directory in the root of the repository.
 

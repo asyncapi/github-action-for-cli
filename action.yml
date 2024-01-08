@@ -22,11 +22,11 @@ inputs:
     required: false
     default: ''
   output:
-    description: 'Directory where to put the generated files.'
+    description: 'Directory where to put the generated files. Can be used only with generate or convert commands. Default is output.'
     required: false
     default: 'output'
   parameters: 
-    description: 'The command that you use might support and even require specific parameters to be passed to the CLI for the generation.'
+    description: 'The command that you use might support and even require specific parameters to be passed to the CLI for the generation. Template parameters should be preceded by -p'
     required: false
     default: ''
   custom_command:
