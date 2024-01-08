@@ -1,14 +1,9 @@
 {
   "name": "github-action-for-generator",
-  "version": "2.1.26",
-  "description": "GitHub action to generate all the things form your AsyncAPI document",
-  "main": "lib/index.js",
+  "description": "This is to be used for running tests for the GitHub Action using the MakeFile",
   "scripts": {
-    "lint": "eslint --max-warnings 0 --config .eslintrc lib",
-    "test": "jest --coverage",
-    "start": "node lib/index.js",
+    "test": "make test",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
-    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "docker:build": "docker build -t asyncapi/github-action-for-generator:latest ."
   },
   "repository": {
@@ -25,16 +20,5 @@
   "bugs": {
     "url": "https://github.com/asyncapi/github-action-for-generator/issues"
   },
-  "homepage": "https://github.com/asyncapi/github-action-for-generator#readme",
-  "devDependencies": {
-    "@npmcli/run-script": "^1.8.5",
-    "@vercel/ncc": "^0.31.1",
-    "eslint": "^6.8.0",
-    "eslint-plugin-sonarjs": "^0.5.0",
-    "jest": "^26.6.3"
-  },
-  "dependencies": {
-    "@actions/core": "^1.9.1",
-    "@asyncapi/generator": "^1.16.0"
-  }
+  "homepage": "https://github.com/asyncapi/github-action-for-generator#readme"
 }
