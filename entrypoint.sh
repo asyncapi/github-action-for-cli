@@ -10,12 +10,18 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 
+if [ -z "$GITHUB_WORKSPACE" ]; then
+  workdir=$(pwd)
+else
+  workdir="$GITHUB_WORKSPACE"
+fi
+
 CLI_VERSION="$1"
 COMMAND="$2"
-FILEPATH="./$3" # Absolute path to the AsyncAPI file
+FILEPATH="$workdir/$3" # Absolute path to the AsyncAPI file
 TEMPLATE="$4"
 LANGUAGE="$5"
-OUTPUT="./$6" # Absolute path to the output directory
+OUTPUT="$workdir/$6" # Absolute path to the output directory
 PARAMETERS="$7"
 CUSTOM_COMMAND="$8"
 
