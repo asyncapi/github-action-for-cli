@@ -55,7 +55,7 @@
     }
   ],
   "contributorsPerLine": 7,
-  "projectName": "github-action-for-generator",
+  "projectName": "github-action-for-cli",
   "projectOwner": "asyncapi",
   "repoType": "github",
   "repoHost": "https://github.com",

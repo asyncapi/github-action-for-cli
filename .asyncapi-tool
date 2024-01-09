@@ -1,6 +1,6 @@
-title: GitHub Action for Generator
+title: GitHub Action for CLI
 filters:
   technology:
-  - AsyncAPI Generator
+  - AsyncAPI CLI
   categories:
   - github-action
