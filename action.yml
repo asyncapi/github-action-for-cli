@@ -36,7 +36,7 @@ inputs:
   
 runs:
   using: 'docker'
-  image: 'asyncapi/github-action-for-cli:3.0.1'
+  image: 'docker://asyncapi/github-action-for-cli:3.0.1'
   args:
     - ${{ inputs.cli_version }}
     - ${{ inputs.command }}
