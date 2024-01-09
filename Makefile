@@ -16,7 +16,8 @@ run:
 
 # Updates the action.yml file with the latest version of the action got from $VERSION env variable
 generate-assets:
-	sed "s/docker:\/\/asyncapi\/github-action-for-cli:.*/docker:\/\/asyncapi\/github-action-for-cli:${VERSION}'/g" action.yml > action.yml.tmp
+	version=$$(echo ${VERSION} | sed 's/v//g'); \
+	sed "s/docker:\/\/asyncapi\/github-action-for-cli:.*/docker:\/\/asyncapi\/github-action-for-cli:$$version'/g" action.yml > action.yml.tmp
 	@mv action.yml.tmp action.yml
 
 test: test-default test-validate-success test-validate-fail test-custom-output test-custom-commands test-optimize test-bundle test-convert
