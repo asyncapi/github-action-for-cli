@@ -71,6 +71,6 @@
   "projectOwner": "asyncapi",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "commitConvention": "none",
+  "commitConvention": "angular",
   "commitType": "docs"
 }
