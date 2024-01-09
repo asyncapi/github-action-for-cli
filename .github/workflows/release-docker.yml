@@ -24,6 +24,6 @@ jobs:
         run: | 
           echo ${{secrets.DOCKER_PASSWORD}} | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin
           npm run docker:build
-          docker tag asyncapi/github-action-for-generator:latest asyncapi/github-action-for-generator:${{ steps.version.outputs.value }}
-          docker push asyncapi/github-action-for-generator:${{ steps.version.outputs.value }}
-          docker push asyncapi/github-action-for-generator:latest
+          docker tag asyncapi/github-action-for-cli:latest asyncapi/github-action-for-cli:${{ steps.version.outputs.value }}
+          docker push asyncapi/github-action-for-cli:${{ steps.version.outputs.value }}
+          docker push asyncapi/github-action-for-cli:latest

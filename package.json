@@ -1,14 +1,15 @@
 {
-  "name": "github-action-for-generator",
+  "name": "github-action-for-cli",
   "description": "This is to be used for running tests for the GitHub Action using the MakeFile",
+  "version": "3.0.0",
   "scripts": {
     "test": "make test",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
-    "docker:build": "docker build -t asyncapi/github-action-for-generator:latest ."
+    "docker:build": "docker build -t asyncapi/github-action-for-cli:latest ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/asyncapi/github-action-for-generator.git"
+    "url": "git+https://github.com/asyncapi/github-action-for-cli.git"
   },
   "keywords": [
     "GitHub",
@@ -18,7 +19,7 @@
   "author": "Lukasz Gornicki <lpgornicki@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/asyncapi/github-action-for-generator/issues"
+    "url": "https://github.com/asyncapi/github-action-for-cli/issues"
   },
-  "homepage": "https://github.com/asyncapi/github-action-for-generator#readme"
+  "homepage": "https://github.com/asyncapi/github-action-for-cli#readme"
 }
