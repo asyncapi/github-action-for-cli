@@ -36,6 +36,7 @@ inputs:
   
 runs:
   using: 'docker'
+  # This is the image that will be used to run the action. The version of the image is changed automatically by releasing a new version of the action.
   image: 'docker://asyncapi/github-action-for-cli:3.0.1'
   args:
     - ${{ inputs.cli_version }}
