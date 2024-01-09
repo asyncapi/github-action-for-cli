@@ -1,12 +1,12 @@
 {
   "name": "github-action-for-cli",
   "description": "This is to be used for running tests for the GitHub Action using the MakeFile",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "scripts": {
     "test": "make test",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
     "docker:build": "docker build -t asyncapi/github-action-for-cli:latest .",
-    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
+    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION && make generate-assets"
   },
   "repository": {
     "type": "git",

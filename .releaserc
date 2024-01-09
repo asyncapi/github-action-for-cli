@@ -18,4 +18,6 @@ plugins:
   - preset: conventionalcommits
 - - "@semantic-release/release-notes-generator"
   - preset: conventionalcommits
+- - "@semantic-release/exec"
+  - prepareCmd: sed "s/docker:\/\/asyncapi\/github-action-for-cli:.*/docker:\/\/asyncapi\/github-action-for-cli:${nextRelease.version}'/g" action.yml > action.yml.tmp && mv action.yml.tmp action.yml
 - "@semantic-release/github"

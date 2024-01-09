@@ -14,6 +14,11 @@ export GITHUB_WORKSPACE = $(shell pwd)
 run:
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) 
 
+# Updates the action.yml file with the latest version of the action got from $VERSION env variable
+generate-assets:
+	sed "s/docker:\/\/asyncapi\/github-action-for-cli:.*/docker:\/\/asyncapi\/github-action-for-cli:${VERSION}'/g" action.yml > action.yml.tmp
+	@mv action.yml.tmp action.yml
+
 test: test-default test-validate-success test-validate-fail test-custom-output test-custom-commands test-optimize test-bundle test-convert
 
 # Test cases
