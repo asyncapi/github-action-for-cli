@@ -104,7 +104,7 @@ In case all defaults are fine for you, just add such step:
 
 ```yaml
 - name: Generating Markdown from my AsyncAPI document
-  uses: 
+  uses: asyncapi/github-action-for-cli@v3.0.2 # You can use any version you want
 ```
 
 ### Using all possible inputs
