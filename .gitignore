@@ -3,3 +3,4 @@ coverage
 output
 node_modules
 dist
+test/unoptimized_optimized.yml

@@ -22,7 +22,7 @@ test: test-default test-validate-success test-validate-fail test-custom-output t
 # sed "s/docker:\/\/asyncapi\/github-action-for-cli:.*/docker:\/\/asyncapi\/github-action-for-cli:$$version'/g" action.yml > action.yml.tmp
 REGEX = docker:\/\/asyncapi\/github-action-for-cli:([0-9.]+)
 test-action-bump:
-	@version=$$(cat package.json | jq -r '.version'); \
+	@bash version=$$(cat package.json | jq -r '.version'); \
 	action=$$(cat action.yml); \
 	[[ $$action =~ $(REGEX) ]]; \
 	action_version=$${BASH_REMATCH[1]}; \
