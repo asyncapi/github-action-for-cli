@@ -6,7 +6,7 @@
     "test": "make test",
     "generate:assets": "echo 'No additional assets need to be generated at the moment'",
     "docker:build": "docker build -t asyncapi/github-action-for-cli:latest .",
-    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION && make generate-assets"
+    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
   },
   "repository": {
     "type": "git",

@@ -14,15 +14,26 @@ export GITHUB_WORKSPACE = $(shell pwd)
 run:
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) 
 
-# Updates the action.yml file with the latest version of the action got from $VERSION env variable
-generate-assets:
-	version=$$(echo ${VERSION} | sed 's/v//g'); \
-	sed "s/docker:\/\/asyncapi\/github-action-for-cli:.*/docker:\/\/asyncapi\/github-action-for-cli:$$version'/g" action.yml > action.yml.tmp
-	@mv action.yml.tmp action.yml
-
-test: test-default test-validate-success test-validate-fail test-custom-output test-custom-commands test-optimize test-bundle test-convert
+test: test-default test-validate-success test-validate-fail test-custom-output test-custom-commands test-optimize test-bundle test-convert test-action-bump
 
 # Test cases
+
+# Tests if the action has been bumped greater than the latest release
+# sed "s/docker:\/\/asyncapi\/github-action-for-cli:.*/docker:\/\/asyncapi\/github-action-for-cli:$$version'/g" action.yml > action.yml.tmp
+REGEX = docker:\/\/asyncapi\/github-action-for-cli:([0-9.]+)
+test-action-bump:
+	@version=$$(cat package.json | jq -r '.version'); \
+	action=$$(cat action.yml); \
+	[[ $$action =~ $(REGEX) ]]; \
+	action_version=$${BASH_REMATCH[1]}; \
+	echo "Action version: $$action_version"; \
+	echo "Package version: $$version"; \
+	if [[ $$action_version > $$version ]]; then \
+		echo "Action version is greater than package version"; \
+	else \
+		echo "Action version has not been bumped. Please bump the action version to the semantically correct version after $$version"; \
+		exit 1; \
+	fi
 
 # Tests the default configuration without any inputs
 test-default:
