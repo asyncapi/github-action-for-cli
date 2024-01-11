@@ -22,9 +22,5 @@
   "bugs": {
     "url": "https://github.com/asyncapi/github-action-for-cli/issues"
   },
-  "homepage": "https://github.com/asyncapi/github-action-for-cli#readme",
-  "devDependencies": {
-    "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/git": "^10.0.1"
-  }
+  "homepage": "https://github.com/asyncapi/github-action-for-cli#readme"
 }
