@@ -41,7 +41,7 @@ Sample usage:
 
 ```yaml
 - name: Generating HTML from my AsyncAPI document
-  uses: asyncapi/github-action-for-cli@v3.0.2 # You can use any version you want
+  uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
   with:
     custom_command: bundle ./asyncapi.yaml --output final-asyncapi.yaml
 ```
@@ -104,7 +104,7 @@ In case all defaults are fine for you, just add such step:
 
 ```yaml
 - name: Generating Markdown from my AsyncAPI document
-  uses: asyncapi/github-action-for-cli@v3.0.2 # You can use any version you want
+  uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
 ```
 
 ### Using all possible inputs
@@ -113,7 +113,7 @@ In case you do not want to use defaults, you for example want to use different t
 
 ```yaml
 - name: Generating HTML from my AsyncAPI document
-  uses: asyncapi/github-action-for-cli@v3.0.2 # You can use any version you want
+  uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
   with:
     command: generate
     filepath: ./docs/api/asyncapi.yaml
@@ -145,7 +145,7 @@ jobs:
       
     #In case you do not want to use defaults, you for example want to use different template
     - name: Generating HTML from my AsyncAPI document
-      uses: asyncapi/github-action-for-cli@v3.0.2 # You can use any version you want
+      uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
       with:
         template: '@asyncapi/html-template@0.9.0'  #In case of template from npm, because of @ it must be in quotes
         filepath: docs/api/my-asyncapi.yml
@@ -182,7 +182,7 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Generating models from my AsyncAPI document
-      uses: asyncapi/github-action-for-cli@v3.0.2 # You can use any version you want
+      uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
       with:
         command: generate
         filepath: docs/api/my-asyncapi.yml
@@ -210,7 +210,7 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Validating AsyncAPI document
-      uses: asyncapi/github-action-for-cli@v3.0.2 # You can use any version you want
+      uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
       with:
         command: validate
         filepath: docs/api/my-asyncapi.yml
