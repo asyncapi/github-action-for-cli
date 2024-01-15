@@ -14,9 +14,13 @@ export GITHUB_WORKSPACE = $(shell pwd)
 run:
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) 
 
-test: test-default test-validate-success test-validate-fail test-custom-output test-custom-commands test-optimize test-bundle test-convert
+test: test-default test-validate-success test-validate-fail test-custom-output test-custom-commands test-optimize test-bundle test-convert test-action-bump
 
 # Test cases
+
+# Tests if the action has been bumped greater than the latest release
+test-action-bump:
+	@bash bump-test.sh
 
 # Tests the default configuration without any inputs
 test-default:
