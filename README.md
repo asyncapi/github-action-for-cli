@@ -41,7 +41,7 @@ Sample usage:
 
 ```yaml
 - name: Generating HTML from my AsyncAPI document
-  uses: docker://asyncapi/github-action-for-cli:2.0.0
+  uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
   with:
     custom_command: bundle ./asyncapi.yaml --output final-asyncapi.yaml
 ```
@@ -91,7 +91,12 @@ The command that you use might support and even require specific parameters to b
 > [!NOTE]
 > For template parameters, you need to pass them as `-p <template_parameters>` as can be seen in CLI documentation.
 
+
 ## Example usage
+
+> [!WARNING]
+> Using `docker://asyncapi/github-action-for-cli` will not work as expected. This is because the GitHub Actions runner does not pass params to the docker image correctly. This is why we recommend to use `asyncapi/github-action-for-cli` instead.
+> However, you don't need to worry as it won't build the image every time. It will pull it from Docker Hub as it is already built there.
 
 ### Basic
 
@@ -99,7 +104,7 @@ In case all defaults are fine for you, just add such step:
 
 ```yaml
 - name: Generating Markdown from my AsyncAPI document
-  uses: docker://asyncapi/github-action-for-cli:3.0.0
+  uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
 ```
 
 ### Using all possible inputs
@@ -108,7 +113,7 @@ In case you do not want to use defaults, you for example want to use different t
 
 ```yaml
 - name: Generating HTML from my AsyncAPI document
-  uses: docker://asyncapi/github-action-for-cli:3.0.0
+  uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
   with:
     command: generate
     filepath: ./docs/api/asyncapi.yaml
@@ -140,7 +145,7 @@ jobs:
       
     #In case you do not want to use defaults, you for example want to use different template
     - name: Generating HTML from my AsyncAPI document
-      uses: docker://asyncapi/github-action-for-cli:3.0.0
+      uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
       with:
         template: '@asyncapi/html-template@0.9.0'  #In case of template from npm, because of @ it must be in quotes
         filepath: docs/api/my-asyncapi.yml
@@ -177,7 +182,7 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Generating models from my AsyncAPI document
-      uses: docker://asyncapi/github-action-for-cli:3.0.0
+      uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
       with:
         command: generate
         filepath: docs/api/my-asyncapi.yml
@@ -205,7 +210,7 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Validating AsyncAPI document
-      uses: docker://asyncapi/github-action-for-cli:3.0.0
+      uses: asyncapi/github-action-for-cli@v3.1.1 # You can use any version you want
       with:
         command: validate
         filepath: docs/api/my-asyncapi.yml
