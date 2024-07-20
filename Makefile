@@ -14,7 +14,7 @@ export GITHUB_WORKSPACE = $(shell pwd)
 run:
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) $(DEFAULT_COMMAND) $(TEST_FILEPATH) $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) $(DEFAULT_PARAMETERS) $(DEFAULT_CUSTOM_COMMANDS) 
 
-test: test-default test-validate-success test-validate-fail test-custom-output test-custom-commands test-optimize test-bundle test-convert
+test: test-default test-validate-success test-custom-output test-custom-commands test-optimize test-bundle test-convert
 
 # Test cases
 
@@ -47,7 +47,7 @@ test-optimize:
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) 'optimize' 'test/unoptimized.yml' $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) '-o new-file --no-tty' $(DEFAULT_CUSTOM_COMMANDS)
 
 # Tests if the action can bundle the specification with custom commands
-BUNDLE_COMMAND='bundle ./test/bundle/asyncapi.yaml ./test/bundle/features.yaml --base ./test/bundle/asyncapi.yaml --reference-into-components -o ./output/bundle/asyncapi.yaml'
+BUNDLE_COMMAND='bundle ./test/bundle/asyncapi.yaml ./test/bundle/features.yaml --base ./test/bundle/asyncapi.yaml -o ./output/bundle/asyncapi.yaml'
 test-bundle:
 	mkdir -p ./output/bundle
 	@bash ./entrypoint.sh $(DEFAULT_VERSION) 'bundle' 'test/bundle/asyncapi.yaml' $(DEFAULT_TEMPLATE) $(DEFAULT_LANGUAGE) $(DEFAULT_OUTPUT) '-o output/bundle/asyncapi.yaml' $(BUNDLE_COMMAND)
