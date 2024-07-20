@@ -5,6 +5,6 @@ info:
   description: This service is in charge of processing user logouts
 channels:
   user/loggedOut:
-    subcribe:
+    subscribe:
       message:
-        $ref: 'test/bundle/messages.yaml#/messages/UserLoggedOut'
+        $ref: "./test/bundle/messages.yaml#/messages/UserLoggedOut"
