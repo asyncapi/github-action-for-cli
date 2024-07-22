@@ -295,7 +295,7 @@ jobs:
       - name: Test GitHub Action
         uses: ./
         with:
-          custom_command: 'bundle ./test/bundle/asyncapi.yaml ./test/bundle/features.yaml --base ./test/bundle/asyncapi.yaml --reference-into-components -o ./output/bundle/asyncapi.yaml'
+          custom_command: 'bundle ./test/bundle/asyncapi.yaml ./test/bundle/features.yaml --base ./test/bundle/asyncapi.yaml -o ./output/bundle/asyncapi.yaml'
       - name: Assert GitHub Action
         run: |
           echo "Listing all files"
