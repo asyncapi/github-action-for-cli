@@ -14,6 +14,6 @@ echo "Package version: $version";
 if [[ $action_version > $version ]]; then
   echo "Action version is greater than package version"; 
 else \
-  echo "Action version has not been bumped. Please bump the action version to the semantically correct version after $$version"; \
+  echo "Action version has not been bumped. Please bump the action version to the semantically correct version after $version"; \
   exit 1; \
 fi
