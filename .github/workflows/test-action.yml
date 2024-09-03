@@ -65,7 +65,7 @@ jobs:
     needs: [should-workflow-run, build-docker]
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: asyncapi
           path: /tmp
@@ -97,7 +97,7 @@ jobs:
     needs: [should-workflow-run, build-docker]
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: asyncapi
           path: /tmp
@@ -118,7 +118,7 @@ jobs:
     needs: [should-workflow-run, build-docker]
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: asyncapi
           path: /tmp
@@ -152,7 +152,7 @@ jobs:
     needs: [should-workflow-run, build-docker]
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: asyncapi
           path: /tmp
@@ -185,7 +185,7 @@ jobs:
     needs: [should-workflow-run, build-docker]
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: asyncapi
           path: /tmp
@@ -215,7 +215,7 @@ jobs:
     needs: [should-workflow-run, build-docker]
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: asyncapi
           path: /tmp
@@ -247,7 +247,7 @@ jobs:
     needs: [should-workflow-run, build-docker]
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: asyncapi
           path: /tmp
@@ -281,7 +281,7 @@ jobs:
     needs: [should-workflow-run, build-docker]
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: asyncapi
           path: /tmp
@@ -315,7 +315,7 @@ jobs:
     needs: [should-workflow-run, build-docker]
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: asyncapi
           path: /tmp
