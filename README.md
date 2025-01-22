@@ -3,6 +3,30 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+## Deprecation Notice
+> [!IMPORTANT]
+> This repository has been **deprecated**. The GitHub Action has been migrated to a new repository for better support and enhancements.
+> ### Migration Details
+> - The new repository: [asyncapi/cli](https://github.com/asyncapi/cli)  
+> - Marketplace URL: [AsyncAPI CLI Action](https://github.com/marketplace/actions/asyncapi-cli-action)
+> ### What to Update:
+> - If you are using `asyncapi/github-action-for-cli` in your workflows, update it to `asyncapi/cli`.
+> - Docker-based actions require no changes, but versions are now synced with CLI releases. Refer to [Docker Hub](https://hub.docker.com/r/asyncapi/github-action-for-cli) for details.
+> ### Example Migration
+> #### Old Workflow:
+> ```yaml
+> - name: AsyncAPI CLI Action
+>  uses: asyncapi/github-action-for-cli@v2.0.0
+> ```
+> #### New Workflow:
+> ```yaml
+> - name: AsyncAPI CLI Action
+>  uses: asyncapi/cli@v2.16.0
+>```
+> For further details, stay tuned for official documentation and blog posts explaining the changes and outlining best practices.
+
+---
+
 This action exposes the [AsyncAPI CLI](https://github.com/asyncapi/cli). It allows you to generate documentation, validate AsyncAPI documents, convert between different AsyncAPI versions and much more.
 
 ## Inputs
